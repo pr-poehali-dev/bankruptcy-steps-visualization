@@ -1,73 +1,31 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
+import { useSiteContent } from '@/hooks/useSiteContent';
 
-const advantages = [
-  {
-    icon: 'BadgeCheck',
-    title: 'Адвокаты, а не юристы',
-    desc: 'Статус адвоката — высший стандарт юридической защиты. Адвокатская тайна гарантирована законом.',
-  },
-  {
-    icon: 'TrendingDown',
-    title: 'Списываем долги полностью',
-    desc: 'Сопровождаем процедуру от подачи заявления до определения суда о завершении дела.',
-  },
-  {
-    icon: 'Landmark',
-    title: 'Опыт в арбитражных судах',
-    desc: 'Многолетняя практика в делах о несостоятельности физических лиц и ИП.',
-  },
-  {
-    icon: 'ShieldCheck',
-    title: 'Фиксированная стоимость',
-    desc: 'Цена услуг определяется на первой консультации — никаких скрытых платежей.',
-  },
-];
-
-const steps = [
-  {
-    num: '01',
-    icon: 'MessageSquare',
-    title: 'Консультация',
-    text: 'Бесплатно разберём вашу ситуацию, оценим шансы и объясним, подходит ли вам банкротство',
-    tag: 'Бесплатно',
-  },
-  {
-    num: '02',
-    icon: 'FolderOpen',
-    title: 'Документы',
-    text: 'Поможем собрать полный пакет документов и подготовим заявление в арбитражный суд',
-    tag: '1–2 недели',
-  },
-  {
-    num: '03',
-    icon: 'Landmark',
-    title: 'Суд',
-    text: 'Подаём заявление и представляем ваши интересы на всех заседаниях арбитражного суда',
-    tag: '1–3 месяца',
-  },
-  {
-    num: '04',
-    icon: 'UserCheck',
-    title: 'Процедура',
-    text: 'Контролируем работу финансового управляющего и защищаем ваше имущество',
-    tag: 'до 12 мес',
-  },
-  {
-    num: '05',
-    icon: 'CircleCheckBig',
-    title: 'Результат',
-    text: 'Суд выносит определение о списании долгов. Вы свободны от обязательств',
-    tag: 'Долги списаны',
-  },
-];
+const ADV_ICONS = ['BadgeCheck', 'TrendingDown', 'Landmark', 'ShieldCheck'];
+const STEP_ICONS = ['MessageSquare', 'FolderOpen', 'Landmark', 'UserCheck', 'CircleCheckBig'];
 
 const Home = () => {
   const navigate = useNavigate();
+  const { g } = useSiteContent();
   const [form, setForm] = useState({ name: '', phone: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const advantages = [1, 2, 3, 4].map((n, i) => ({
+    icon: ADV_ICONS[i],
+    title: g(`adv_${n}_title`, ['Адвокаты, а не юристы', 'Списываем долги полностью', 'Опыт в арбитражных судах', 'Фиксированная стоимость'][i]),
+    desc: g(`adv_${n}_desc`, ['Статус адвоката — высший стандарт юридической защиты.', 'Сопровождаем процедуру от подачи заявления до завершения дела.', 'Многолетняя практика в делах о несостоятельности.', 'Цена определяется на первой консультации.'][i]),
+  }));
+
+  const steps = [1, 2, 3, 4, 5].map((n, i) => ({
+    num: String(n).padStart(2, '0'),
+    icon: STEP_ICONS[i],
+    title: g(`step_${n}_title`, ['Консультация', 'Документы', 'Суд', 'Процедура', 'Результат'][i]),
+    text: g(`step_${n}_text`, ''),
+    tag: g(`step_${n}_tag`, ''),
+  }));
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -91,16 +49,16 @@ const Home = () => {
               className="h-9 w-auto object-contain"
             />
             <div>
-              <div className="font-heading font-bold text-slate-900 text-sm leading-none">АБ «Правовой статус»</div>
-              <div className="text-xs text-slate-400 leading-none mt-0.5">Адвокатское бюро</div>
+              <div className="font-heading font-bold text-slate-900 text-sm leading-none">{g('header_firm_name', 'АБ «Правовой статус»')}</div>
+              <div className="text-xs text-slate-400 leading-none mt-0.5">{g('header_firm_subtitle', 'Адвокатское бюро')}</div>
             </div>
           </div>
           <a
-            href="tel:+78001234567"
+            href={`tel:${g('header_phone', '+78001234567')}`}
             className="hidden md:flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#1B3F7C] text-white text-sm font-semibold hover:bg-[#163270] transition-colors"
           >
             <Icon name="Phone" size={14} />
-            Бесплатная консультация
+            {g('btn_header_cta', 'Бесплатная консультация')}
           </a>
         </div>
       </header>
@@ -115,27 +73,26 @@ const Home = () => {
           <div className="animate-fade-in">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 border border-white/20 mb-8">
               <span className="w-2 h-2 rounded-full bg-blue-200" />
-              <span className="text-sm text-blue-100">Банкротство физических лиц</span>
+              <span className="text-sm text-blue-100">{g('hero_tag', 'Банкротство физических лиц')}</span>
             </div>
             <h1 className="font-heading font-extrabold text-4xl md:text-6xl text-white leading-[1.05] mb-6">
-              Избавьтесь от долгов
+              {g('hero_title_1', 'Избавьтесь от долгов')}
               <br />
-              <span className="text-blue-200">законно и навсегда</span>
+              <span className="text-blue-200">{g('hero_title_2', 'законно и навсегда')}</span>
             </h1>
             <p className="text-blue-100/80 text-lg leading-relaxed mb-10 max-w-lg">
-              Адвокатское бюро «Правовой статус» проведёт процедуру банкротства
-              под ключ — от первичного анализа до полного списания задолженности.
+              {g('hero_desc', 'Адвокатское бюро «Правовой статус» проведёт процедуру банкротства под ключ — от первичного анализа до полного списания задолженности.')}
             </p>
             <div className="flex flex-wrap gap-3">
               <button className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-white text-[#1B3F7C] font-semibold text-sm hover:bg-blue-50 transition-colors shadow-md">
                 <Icon name="MessageSquare" size={16} />
-                Получить консультацию
+                {g('btn_hero_primary', 'Получить консультацию')}
               </button>
               <button
                 onClick={() => navigate('/stages')}
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-white/15 border border-white/25 text-white font-semibold text-sm hover:bg-white/25 transition-all"
               >
-                Как это работает
+                {g('btn_hero_secondary', 'Как это работает')}
                 <Icon name="ArrowRight" size={16} />
               </button>
             </div>
@@ -144,19 +101,13 @@ const Home = () => {
           {/* Hero aside */}
           <div className="animate-fade-in" style={{ animationDelay: '0.15s', opacity: 0 }}>
             <div className="bg-white rounded-3xl p-8 space-y-4 shadow-xl">
-              <div className="text-xs font-heading font-semibold text-[#1B3F7C] uppercase tracking-widest mb-4">Ваш результат</div>
-              {[
-                'Полное списание долгов по решению суда',
-                'Единственное жильё остаётся у вас',
-                'Прекращение звонков от коллекторов',
-                'Снятие арестов и исполнительных листов',
-                'Чистая жизнь без долгового бремени',
-              ].map((text, i) => (
+              <div className="text-xs font-heading font-semibold text-[#1B3F7C] uppercase tracking-widest mb-4">{g('hero_result_label', 'Ваш результат')}</div>
+              {[1,2,3,4,5].map((n, i) => (
                 <div key={i} className="flex items-center gap-3">
                   <div className="w-5 h-5 shrink-0 rounded-full bg-[#1B3F7C] flex items-center justify-center">
                     <Icon name="Check" size={11} className="text-white" fallback="Check" />
                   </div>
-                  <span className="text-slate-700 text-sm">{text}</span>
+                  <span className="text-slate-700 text-sm">{g(`hero_result_${n}`, ['Полное списание долгов по решению суда','Единственное жильё остаётся у вас','Прекращение звонков от коллекторов','Снятие арестов и исполнительных листов','Чистая жизнь без долгового бремени'][i])}</span>
                 </div>
               ))}
               <div className="pt-5 border-t border-slate-100 flex items-center gap-3">
@@ -167,7 +118,7 @@ const Home = () => {
                     </div>
                   ))}
                 </div>
-                <span className="text-sm text-slate-500">Более <strong className="text-slate-900">500 дел</strong> успешно завершено</span>
+                <span className="text-sm text-slate-500">{g('hero_cases_stat', 'Более 500 дел успешно завершено')}</span>
               </div>
             </div>
           </div>
@@ -180,10 +131,10 @@ const Home = () => {
         <section className="pt-20 pb-20">
           <div className="text-center mb-12 animate-fade-in" style={{ animationDelay: '0.2s', opacity: 0 }}>
             <h2 className="font-heading font-extrabold text-3xl md:text-4xl text-slate-900 mb-3">
-              Почему АБ «Правовой статус»
+              {g('adv_section_title', 'Почему АБ «Правовой статус»')}
             </h2>
             <p className="text-slate-400 max-w-xl mx-auto">
-              Мы специализируемся исключительно на защите интересов граждан в делах о несостоятельности
+              {g('adv_section_subtitle', 'Мы специализируемся исключительно на защите интересов граждан в делах о несостоятельности')}
             </p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -210,7 +161,7 @@ const Home = () => {
               <Icon name="Route" size={13} className="text-blue-700" fallback="Circle" />
               <span className="text-xs font-semibold text-blue-700">Наш процесс</span>
             </div>
-            <h2 className="font-heading font-extrabold text-3xl md:text-4xl text-slate-900">Как мы работаем</h2>
+            <h2 className="font-heading font-extrabold text-3xl md:text-4xl text-slate-900">{g('steps_section_title', 'Как мы работаем')}</h2>
           </div>
 
           {/* Desktop stepper */}
@@ -260,9 +211,9 @@ const Home = () => {
         <section className="pb-20">
           <div className="text-center mb-10 animate-fade-in" style={{ animationDelay: '0.35s', opacity: 0 }}>
             <h2 className="font-heading font-extrabold text-3xl md:text-4xl text-slate-900 mb-3">
-              Полезная информация
+              {g('cards_section_title', 'Полезная информация')}
             </h2>
-            <p className="text-slate-500">Интерактивные разделы с детальными схемами процедуры</p>
+            <p className="text-slate-500">{g('cards_section_subtitle', 'Интерактивные разделы с детальными схемами процедуры')}</p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -270,29 +221,29 @@ const Home = () => {
               {
                 path: '/stages', icon: 'ListOrdered', delay: '0.4s',
                 color: '#1B3F7C', bg: 'bg-blue-50',
-                title: 'Этапы процедуры',
-                desc: 'Пять ключевых шагов — от подачи заявления в суд до полного списания долгов.',
+                title: g('card_stages_title', 'Этапы процедуры'),
+                desc: g('card_stages_desc', 'Пять ключевых шагов — от подачи заявления в суд до полного списания долгов.'),
                 stats: [{ icon: 'Clock', text: '5 этапов' }, { icon: 'Timer', text: '6–12 месяцев' }],
                 tags: ['Подача заявления', 'Суд', 'Реструктуризация', 'Реализация', 'Списание'],
-                link: 'Перейти к этапам',
+                link: g('card_stages_link', 'Перейти к этапам'),
               },
               {
                 path: '/consequences', icon: 'AlertTriangle', delay: '0.48s',
                 color: '#92400E', bg: 'bg-amber-50',
-                title: 'Последствия банкротства',
-                desc: 'Ограничения по срокам, что сохраняется, какие долги не списываются.',
+                title: g('card_consequences_title', 'Последствия банкротства'),
+                desc: g('card_consequences_desc', 'Ограничения по срокам, что сохраняется, какие долги не списываются.'),
                 stats: [{ icon: 'Ban', text: '5 ограничений' }, { icon: 'ShieldCheck', text: 'Жильё сохраняется' }],
                 tags: ['Ограничения', 'Кредиты', 'Руководство', 'Что сохранится', 'Сроки'],
-                link: 'Перейти к последствиям',
+                link: g('card_consequences_link', 'Перейти к последствиям'),
               },
               {
                 path: '/payments', icon: 'Receipt', delay: '0.56s',
                 color: '#065F46', bg: 'bg-emerald-50',
-                title: 'Обязательные платежи',
-                desc: 'Госпошлина, вознаграждение управляющего, публикации и доп. расходы.',
+                title: g('card_payments_title', 'Обязательные платежи'),
+                desc: g('card_payments_desc', 'Госпошлина, вознаграждение управляющего, публикации и доп. расходы.'),
                 stats: [{ icon: 'Landmark', text: 'от 300 ₽' }, { icon: 'Building2', text: 'МФЦ — бесплатно' }],
                 tags: ['Госпошлина', 'Управляющий', 'Публикации', 'МФЦ бесплатно'],
-                link: 'Посмотреть платежи',
+                link: g('card_payments_link', 'Посмотреть платежи'),
               },
             ].map((card) => (
               <button
@@ -349,10 +300,10 @@ const Home = () => {
         <section className="pb-20 animate-fade-in" style={{ animationDelay: '0.5s', opacity: 0 }}>
           <div className="bg-[#1B3F7C] rounded-2xl grid grid-cols-2 md:grid-cols-4">
             {[
-              { icon: 'Users', value: '500+', label: 'завершённых дел' },
-              { icon: 'Timer', value: '6–12 мес', label: 'средний срок' },
-              { icon: 'Wallet', value: 'от 25 000 ₽', label: 'порог долга' },
-              { icon: 'ShieldCheck', value: '100%', label: 'списание долгов' },
+              { icon: 'Users', value: g('stat_1_value', '500+'), label: g('stat_1_label', 'завершённых дел') },
+              { icon: 'Timer', value: g('stat_2_value', '6–12 мес'), label: g('stat_2_label', 'средний срок') },
+              { icon: 'Wallet', value: g('stat_3_value', 'от 25 000 ₽'), label: g('stat_3_label', 'порог долга') },
+              { icon: 'ShieldCheck', value: g('stat_4_value', '100%'), label: g('stat_4_label', 'списание долгов') },
             ].map((s, i) => (
               <div key={s.label} className={`p-7 text-center ${i < 3 ? 'border-r border-white/5' : ''}`}>
                 <Icon name={s.icon} size={22} className="text-blue-400 mx-auto mb-3" fallback="Star" />
@@ -373,20 +324,19 @@ const Home = () => {
                 <div>
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 mb-8">
                     <span className="w-2 h-2 rounded-full bg-blue-300" />
-                    <span className="text-xs text-blue-200 font-medium">Бесплатная консультация</span>
+                    <span className="text-xs text-blue-200 font-medium">{g('form_title', 'Бесплатная консультация')}</span>
                   </div>
                   <h2 className="font-heading font-extrabold text-3xl text-white leading-tight mb-4">
-                    Расскажите о своей ситуации
+                    {g('hero_title', 'Расскажите о своей ситуации')}
                   </h2>
                   <p className="text-blue-200 text-sm leading-relaxed mb-10">
-                    Адвокат свяжется с вами в течение рабочего дня, изучит ваш случай
-                    и объяснит, подходит ли вам процедура банкротства.
+                    {g('hero_subtitle', 'Адвокат свяжется с вами в течение рабочего дня, изучит ваш случай и объяснит, подходит ли вам процедура банкротства.')}
                   </p>
                   <div className="space-y-4">
                     {[
-                      { icon: 'Clock', text: 'Ответ в течение рабочего дня' },
-                      { icon: 'Lock', text: 'Адвокатская тайна гарантирована' },
-                      { icon: 'BadgeCheck', text: 'Без обязательств и скрытых условий' },
+                      { icon: 'Clock', text: g('form_guarantee_1', 'Ответ в течение рабочего дня') },
+                      { icon: 'Lock', text: g('form_guarantee_2', 'Адвокатская тайна гарантирована') },
+                      { icon: 'BadgeCheck', text: g('form_guarantee_3', 'Без обязательств и скрытых условий') },
                     ].map((item, i) => (
                       <div key={i} className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
@@ -410,9 +360,9 @@ const Home = () => {
                     <div className="w-16 h-16 rounded-2xl bg-teal-50 flex items-center justify-center mb-5">
                       <Icon name="CheckCheck" size={30} className="text-teal-600" fallback="Check" />
                     </div>
-                    <h3 className="font-heading font-bold text-2xl text-slate-900 mb-3">Заявка отправлена!</h3>
+                    <h3 className="font-heading font-bold text-2xl text-slate-900 mb-3">{g('form_success_title', 'Заявка отправлена!')}</h3>
                     <p className="text-slate-500 text-sm leading-relaxed max-w-xs">
-                      Адвокат свяжется с вами в течение рабочего дня. Спасибо за обращение в АБ «Правовой статус».
+                      {g('form_success_text', 'Адвокат свяжется с вами в течение рабочего дня. Спасибо за обращение в АБ «Правовой статус».')}
                     </p>
                     <button
                       onClick={() => { setSubmitted(false); setForm({ name: '', phone: '', message: '' }); }}
@@ -424,8 +374,8 @@ const Home = () => {
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-5">
                     <div>
-                      <h3 className="font-heading font-bold text-2xl text-slate-900 mb-1">Записаться на консультацию</h3>
-                      <p className="text-sm text-slate-500">Первичный приём — бесплатно</p>
+                      <h3 className="font-heading font-bold text-2xl text-slate-900 mb-1">{g('form_subtitle', 'Записаться на консультацию')}</h3>
+                      <p className="text-sm text-slate-500">{g('form_subtitle_sub', 'Первичный приём — бесплатно')}</p>
                     </div>
 
                     <div className="space-y-4 pt-2">
@@ -434,7 +384,7 @@ const Home = () => {
                         <input
                           type="text"
                           required
-                          placeholder="Иван Иванов"
+                          placeholder={g('form_field_name_placeholder', 'Иван Иванов')}
                           value={form.name}
                           onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
                           className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
@@ -445,7 +395,7 @@ const Home = () => {
                         <input
                           type="tel"
                           required
-                          placeholder="+7 (___) ___-__-__"
+                          placeholder={g('form_field_phone_placeholder', '+7 (___) ___-__-__')}
                           value={form.phone}
                           onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
                           className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
@@ -453,11 +403,11 @@ const Home = () => {
                       </div>
                       <div>
                         <label className="block text-xs font-semibold text-slate-600 mb-1.5 uppercase tracking-wide">
-                          Кратко опишите ситуацию <span className="text-slate-400 font-normal normal-case">(необязательно)</span>
+                          {g('form_field_message_label', 'Кратко опишите ситуацию')} <span className="text-slate-400 font-normal normal-case">(необязательно)</span>
                         </label>
                         <textarea
                           rows={3}
-                          placeholder="Сумма долга, количество кредиторов, наличие имущества..."
+                          placeholder={g('form_field_message_placeholder', 'Сумма долга, количество кредиторов, наличие имущества...')}
                           value={form.message}
                           onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
                           className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
@@ -478,13 +428,13 @@ const Home = () => {
                       ) : (
                         <>
                           <Icon name="Send" size={16} />
-                          Отправить заявку
+                          {g('btn_form_submit', 'Отправить заявку')}
                         </>
                       )}
                     </button>
 
                     <p className="text-xs text-slate-400 text-center leading-relaxed">
-                      Нажимая кнопку, вы соглашаетесь с обработкой персональных данных
+                      {g('form_privacy_text', 'Нажимая кнопку, вы соглашаетесь с обработкой персональных данных')}
                     </p>
                   </form>
                 )}

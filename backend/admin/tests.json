@@ -19,12 +19,12 @@
       "expectedBody": {"ok": false}
     },
     {
-      "name": "OPTIONS preflight",
-      "method": "OPTIONS",
+      "name": "Get public settings",
+      "method": "GET",
       "path": "/",
       "expectedStatus": 200,
       "bodyMatcher": "partial",
-      "expectedBody": {}
+      "expectedBody": {"settings": {}}
     }
   ]
 }

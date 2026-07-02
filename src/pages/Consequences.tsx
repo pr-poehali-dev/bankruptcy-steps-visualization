@@ -1,8 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
+import { useSiteContent } from '@/hooks/useSiteContent';
+
+const RESTRICT_ICONS = ['CreditCard', 'Briefcase', 'RefreshCw', 'Plane', 'PiggyBank'];
+const PRESERVED_ICONS = ['Home', 'ShoppingCart', 'Car', 'Baby', 'Heart'];
+const LIMIT_COLORS = ['#1D4ED8', '#1E3A8A', '#2563EB', '#3B82F6', '#0F766E'];
 
 const Consequences = () => {
   const navigate = useNavigate();
+  const { g } = useSiteContent();
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 overflow-hidden relative font-body">
@@ -50,13 +56,12 @@ const Consequences = () => {
             Шкала ограничений по времени
           </h3>
           <div className="space-y-5">
-            {[
-              { label: 'Запрет занимать руководящие должности', years: 3, max: 10, color: '#1D4ED8' },
-              { label: 'Запрет руководить банком или МФО', years: 10, max: 10, color: '#1E3A8A' },
-              { label: 'Обязанность уведомлять банки о банкротстве', years: 5, max: 10, color: '#2563EB' },
-              { label: 'Запрет повторного банкротства', years: 5, max: 10, color: '#3B82F6' },
-              { label: 'Негативная кредитная история', years: 7, max: 10, color: '#0F766E' },
-            ].map((item, i) => (
+            {[1,2,3,4,5].map((n, i) => {
+              const label = g(`cons_limit_${n}_label`, ['Запрет занимать руководящие должности','Запрет руководить банком или МФО','Обязанность уведомлять банки о банкротстве','Запрет повторного банкротства','Негативная кредитная история'][i]);
+              const years = parseInt(g(`cons_limit_${n}_years`, ['3','10','5','5','7'][i]));
+              const color = LIMIT_COLORS[i];
+              return ({ label, years, max: 10, color });
+            }).map((item, i) => (
               <div key={i}>
                 <div className="flex justify-between items-center mb-1.5">
                   <span className="text-sm text-slate-700">{item.label}</span>
@@ -92,33 +97,11 @@ const Consequences = () => {
               <h2 className="font-heading font-bold text-xl text-slate-900">Ограничения</h2>
             </div>
             <div className="space-y-4">
-              {[
-                {
-                  icon: 'CreditCard',
-                  title: 'Кредитная история',
-                  desc: 'Запись о банкротстве хранится 7–10 лет. Банки будут требовать её раскрытия при заявках.',
-                },
-                {
-                  icon: 'Briefcase',
-                  title: 'Запрет на руководство',
-                  desc: '3 года нельзя быть директором ООО, 5 лет — руководить МФО, 10 лет — банком.',
-                },
-                {
-                  icon: 'RefreshCw',
-                  title: 'Повторное банкротство',
-                  desc: 'Следующую процедуру можно начать не ранее чем через 5 лет.',
-                },
-                {
-                  icon: 'Plane',
-                  title: 'Выезд за рубеж',
-                  desc: 'Суд вправе временно ограничить выезд до завершения процедуры.',
-                },
-                {
-                  icon: 'PiggyBank',
-                  title: 'Новые займы',
-                  desc: '5 лет обязательно сообщать кредиторам о факте банкротства при подаче заявок.',
-                },
-              ].map((item, i) => (
+              {[1,2,3,4,5].map((n, i) => ({
+                icon: RESTRICT_ICONS[i],
+                title: g(`cons_restrict_${n}_title`, ['Кредитная история','Запрет на руководство','Повторное банкротство','Выезд за рубеж','Новые займы'][i]),
+                desc: g(`cons_restrict_${n}_desc`, ['Запись о банкротстве хранится 7–10 лет.','3 года нельзя быть директором ООО.','Следующую процедуру можно начать через 5 лет.','Суд вправе временно ограничить выезд.','5 лет сообщать кредиторам о банкротстве.'][i]),
+              })).map((item, i) => (
                 <div key={i} className="flex items-start gap-3">
                   <div className="mt-0.5 w-8 h-8 shrink-0 rounded-lg bg-red-50 flex items-center justify-center">
                     <Icon name={item.icon} size={16} className="text-red-400" fallback="Circle" />
@@ -144,33 +127,11 @@ const Consequences = () => {
               <h2 className="font-heading font-bold text-xl text-slate-900">Что сохраняется</h2>
             </div>
             <div className="space-y-4">
-              {[
-                {
-                  icon: 'Home',
-                  title: 'Единственное жильё',
-                  desc: 'Квартира или дом, если не в ипотеке — не изымается ни при каких условиях.',
-                },
-                {
-                  icon: 'ShoppingCart',
-                  title: 'Предметы быта',
-                  desc: 'Бытовая техника, одежда, мебель — всё необходимое для жизни остаётся.',
-                },
-                {
-                  icon: 'Car',
-                  title: 'Авто для работы',
-                  desc: 'Транспортное средство, без которого невозможна профессиональная деятельность.',
-                },
-                {
-                  icon: 'Baby',
-                  title: 'Детские пособия',
-                  desc: 'Выплаты на детей и алименты — не входят в конкурсную массу.',
-                },
-                {
-                  icon: 'Heart',
-                  title: 'Трудовые права',
-                  desc: 'Банкротство не влияет на трудоустройство и не является основанием для увольнения.',
-                },
-              ].map((item, i) => (
+              {[1,2,3,4,5].map((n, i) => ({
+                icon: PRESERVED_ICONS[i],
+                title: g(`cons_preserved_${n}_title`, ['Единственное жильё','Предметы быта','Авто для работы','Детские пособия','Трудовые права'][i]),
+                desc: g(`cons_preserved_${n}_desc`, ['Квартира или дом, если не в ипотеке — не изымается.','Бытовая техника, одежда, мебель — остаётся.','Транспорт для профессиональной деятельности.','Выплаты на детей и алименты — не изымаются.','Банкротство не влияет на трудоустройство.'][i]),
+              })).map((item, i) => (
                 <div key={i} className="flex items-start gap-3">
                   <div className="mt-0.5 w-8 h-8 shrink-0 rounded-lg bg-teal-50 flex items-center justify-center">
                     <Icon name={item.icon} size={16} className="text-teal-600" fallback="Circle" />
@@ -192,8 +153,7 @@ const Consequences = () => {
         >
           <Icon name="Info" size={20} className="text-blue-600 mt-0.5 shrink-0" fallback="Circle" />
           <p className="text-sm text-blue-800 leading-relaxed">
-            <strong>Важно:</strong> долги по алиментам, возмещению вреда здоровью и уголовным
-            штрафам не списываются даже после завершения процедуры банкротства.
+            {g('cons_bottom_note', 'Важно: долги по алиментам, возмещению вреда здоровью и уголовным штрафам не списываются даже после завершения процедуры банкротства.')}
           </p>
         </div>
 

@@ -49,6 +49,16 @@ def handler(event: dict, context) -> dict:
             return resp(200, {'ok': True, 'session': 'admin-session-valid'})
         return resp(401, {'ok': False, 'error': 'Неверный логин или пароль'})
 
+    # GET /settings публично (для фронтенда сайта)
+    if method == 'GET' and (path.endswith('/settings') or path in ('/', '')):
+        conn = get_conn()
+        cur = conn.cursor(cursor_factory=RealDictCursor)
+        cur.execute(f"SELECT key, value FROM {SCHEMA}.site_settings")
+        rows = cur.fetchall()
+        conn.close()
+        settings = {r['key']: r['value'] for r in rows}
+        return resp(200, {'settings': settings})
+
     # Все остальные запросы требуют авторизации
     if not check_session(headers):
         return resp(401, {'error': 'Не авторизован'})
@@ -73,16 +83,6 @@ def handler(event: dict, context) -> dict:
         conn.commit()
         conn.close()
         return resp(200, {'ok': True})
-
-    # GET /admin/settings — все настройки
-    if method == 'GET' and path.endswith('/settings'):
-        conn = get_conn()
-        cur = conn.cursor(cursor_factory=RealDictCursor)
-        cur.execute(f"SELECT key, value FROM {SCHEMA}.site_settings")
-        rows = cur.fetchall()
-        conn.close()
-        settings = {r['key']: r['value'] for r in rows}
-        return resp(200, {'settings': settings})
 
     # POST /admin/settings — сохранить настройки
     if method == 'POST' and path.endswith('/settings'):

@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
 import AdminStats from '@/components/admin/AdminStats';
 import AdminLeads from '@/components/admin/AdminLeads';
-import { ContentTab, FormsTab, SeoTab } from '@/components/admin/AdminSettings';
+import { ContentTab, FormsTab, SeoTab, HeroTab, AdvantagesTab, StepsTab, StagesTab, ConsequencesTab } from '@/components/admin/AdminSettings';
+import { invalidateContentCache } from '@/hooks/useSiteContent';
 
 const ADMIN_URL = 'https://functions.poehali.dev/f93de05a-95a2-4dbb-bfdd-35104dcbefc5';
 
-type Tab = 'stats' | 'leads' | 'content' | 'forms' | 'seo';
+type Tab = 'stats' | 'leads' | 'hero' | 'advantages' | 'steps' | 'stages' | 'consequences' | 'content' | 'forms' | 'seo';
 
 interface Lead {
   id: number;
@@ -58,7 +59,7 @@ const AdminPanel = () => {
   useEffect(() => {
     if (tab === 'stats') api('/stats').then(d => d && setStats(d));
     if (tab === 'leads') api('/leads').then(d => d && setLeads(d.leads || []));
-    if (tab === 'content' || tab === 'seo' || tab === 'forms') api('/settings').then(d => d && setSettings(d.settings || {}));
+    if (!['stats', 'leads'].includes(tab)) api('/settings').then(d => d && setSettings(d.settings || {}));
   }, [tab, api]);
 
   const handleLogout = () => {
@@ -69,6 +70,7 @@ const AdminPanel = () => {
   const handleSaveSettings = async () => {
     setLoading(true);
     await api('/settings', 'POST', { settings });
+    invalidateContentCache();
     setSaveMsg('Сохранено!');
     setLoading(false);
     setTimeout(() => setSaveMsg(''), 3000);
@@ -83,13 +85,39 @@ const AdminPanel = () => {
     setSettings(s => ({ ...s, [key]: value }));
   };
 
-  const tabs: { id: Tab; label: string; icon: string }[] = [
-    { id: 'stats', label: 'Статистика', icon: 'BarChart3' },
-    { id: 'leads', label: 'Заявки', icon: 'Inbox' },
-    { id: 'content', label: 'Контент', icon: 'FileEdit' },
-    { id: 'forms', label: 'Формы и кнопки', icon: 'MousePointerClick' },
-    { id: 'seo', label: 'SEO', icon: 'Search' },
+  const tabGroups: { group: string; items: { id: Tab; label: string; icon: string }[] }[] = [
+    {
+      group: 'Данные',
+      items: [
+        { id: 'stats', label: 'Статистика', icon: 'BarChart3' },
+        { id: 'leads', label: 'Заявки', icon: 'Inbox' },
+      ],
+    },
+    {
+      group: 'Главная',
+      items: [
+        { id: 'hero', label: 'Hero', icon: 'LayoutTemplate' },
+        { id: 'advantages', label: 'Преимущества', icon: 'BadgeCheck' },
+        { id: 'steps', label: 'Как работаем', icon: 'Route' },
+        { id: 'content', label: 'Прочий контент', icon: 'FileEdit' },
+        { id: 'forms', label: 'Формы и кнопки', icon: 'MousePointerClick' },
+      ],
+    },
+    {
+      group: 'Страницы',
+      items: [
+        { id: 'stages', label: 'Этапы', icon: 'ListOrdered' },
+        { id: 'consequences', label: 'Последствия', icon: 'AlertTriangle' },
+      ],
+    },
+    {
+      group: 'Техн.',
+      items: [
+        { id: 'seo', label: 'SEO', icon: 'Search' },
+      ],
+    },
   ];
+  const tabs = tabGroups.flatMap(g => g.items);
 
   return (
     <div className="min-h-screen bg-slate-50 font-body">
@@ -118,23 +146,28 @@ const AdminPanel = () => {
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-6 flex gap-1 pb-0">
-          {tabs.map(t => (
-            <button
-              key={t.id}
-              onClick={() => setTab(t.id)}
-              className={`flex items-center gap-2 px-5 py-3 text-sm font-medium rounded-t-xl transition-all ${
-                tab === t.id ? 'bg-slate-50 text-[#1B3F7C]' : 'text-blue-200 hover:text-white hover:bg-white/10'
-              }`}
-            >
-              <Icon name={t.icon} size={15} fallback="Circle" />
-              {t.label}
-              {t.id === 'leads' && leads.filter(l => l.status === 'new').length > 0 && (
-                <span className="w-5 h-5 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center">
-                  {leads.filter(l => l.status === 'new').length}
-                </span>
-              )}
-            </button>
+        <div className="max-w-7xl mx-auto px-6 flex flex-wrap gap-x-6 gap-y-0 pb-0">
+          {tabGroups.map(group => (
+            <div key={group.group} className="flex items-end gap-0.5">
+              <span className="text-[10px] text-blue-400/60 font-semibold uppercase tracking-wider mr-1 mb-3 hidden lg:block">{group.group}</span>
+              {group.items.map(t => (
+                <button
+                  key={t.id}
+                  onClick={() => setTab(t.id)}
+                  className={`flex items-center gap-1.5 px-4 py-3 text-sm font-medium rounded-t-xl transition-all ${
+                    tab === t.id ? 'bg-slate-50 text-[#1B3F7C]' : 'text-blue-200 hover:text-white hover:bg-white/10'
+                  }`}
+                >
+                  <Icon name={t.icon} size={14} fallback="Circle" />
+                  {t.label}
+                  {t.id === 'leads' && leads.filter(l => l.status === 'new').length > 0 && (
+                    <span className="w-4 h-4 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">
+                      {leads.filter(l => l.status === 'new').length}
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
           ))}
         </div>
       </header>
@@ -142,33 +175,14 @@ const AdminPanel = () => {
       <main className="max-w-7xl mx-auto px-6 py-8">
         {tab === 'stats' && <AdminStats stats={stats} />}
         {tab === 'leads' && <AdminLeads leads={leads} onStatusChange={handleLeadStatus} />}
-        {tab === 'content' && (
-          <ContentTab
-            settings={settings}
-            onChange={handleSettingChange}
-            loading={loading}
-            saveMsg={saveMsg}
-            onSave={handleSaveSettings}
-          />
-        )}
-        {tab === 'forms' && (
-          <FormsTab
-            settings={settings}
-            onChange={handleSettingChange}
-            loading={loading}
-            saveMsg={saveMsg}
-            onSave={handleSaveSettings}
-          />
-        )}
-        {tab === 'seo' && (
-          <SeoTab
-            settings={settings}
-            onChange={handleSettingChange}
-            loading={loading}
-            saveMsg={saveMsg}
-            onSave={handleSaveSettings}
-          />
-        )}
+        {tab === 'hero' && <HeroTab settings={settings} onChange={handleSettingChange} loading={loading} saveMsg={saveMsg} onSave={handleSaveSettings} />}
+        {tab === 'advantages' && <AdvantagesTab settings={settings} onChange={handleSettingChange} loading={loading} saveMsg={saveMsg} onSave={handleSaveSettings} />}
+        {tab === 'steps' && <StepsTab settings={settings} onChange={handleSettingChange} loading={loading} saveMsg={saveMsg} onSave={handleSaveSettings} />}
+        {tab === 'stages' && <StagesTab settings={settings} onChange={handleSettingChange} loading={loading} saveMsg={saveMsg} onSave={handleSaveSettings} />}
+        {tab === 'consequences' && <ConsequencesTab settings={settings} onChange={handleSettingChange} loading={loading} saveMsg={saveMsg} onSave={handleSaveSettings} />}
+        {tab === 'content' && <ContentTab settings={settings} onChange={handleSettingChange} loading={loading} saveMsg={saveMsg} onSave={handleSaveSettings} />}
+        {tab === 'forms' && <FormsTab settings={settings} onChange={handleSettingChange} loading={loading} saveMsg={saveMsg} onSave={handleSaveSettings} />}
+        {tab === 'seo' && <SeoTab settings={settings} onChange={handleSettingChange} loading={loading} saveMsg={saveMsg} onSave={handleSaveSettings} />}
       </main>
     </div>
   );
