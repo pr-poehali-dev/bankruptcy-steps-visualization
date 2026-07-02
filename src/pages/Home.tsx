@@ -143,8 +143,8 @@ const Home = () => {
 
           {/* Hero aside */}
           <div className="animate-fade-in" style={{ animationDelay: '0.15s', opacity: 0 }}>
-            <div className="bg-white/10 border border-white/20 rounded-3xl p-8 space-y-4 backdrop-blur-sm">
-              <div className="text-xs font-heading font-semibold text-blue-200 uppercase tracking-widest mb-4">Ваш результат</div>
+            <div className="bg-white rounded-3xl p-8 space-y-4 shadow-xl">
+              <div className="text-xs font-heading font-semibold text-[#1B3F7C] uppercase tracking-widest mb-4">Ваш результат</div>
               {[
                 'Полное списание долгов по решению суда',
                 'Единственное жильё остаётся у вас',
@@ -153,21 +153,21 @@ const Home = () => {
                 'Чистая жизнь без долгового бремени',
               ].map((text, i) => (
                 <div key={i} className="flex items-center gap-3">
-                  <div className="w-5 h-5 shrink-0 rounded-full bg-white/20 flex items-center justify-center">
+                  <div className="w-5 h-5 shrink-0 rounded-full bg-[#1B3F7C] flex items-center justify-center">
                     <Icon name="Check" size={11} className="text-white" fallback="Check" />
                   </div>
-                  <span className="text-slate-300 text-sm">{text}</span>
+                  <span className="text-slate-700 text-sm">{text}</span>
                 </div>
               ))}
-              <div className="pt-5 border-t border-white/10 flex items-center gap-3">
+              <div className="pt-5 border-t border-slate-100 flex items-center gap-3">
                 <div className="flex -space-x-2">
-                  {['bg-blue-600', 'bg-blue-500', 'bg-blue-400'].map((c, i) => (
-                    <div key={i} className={`w-8 h-8 rounded-full ${c} border-2 border-[#1B3F7C] flex items-center justify-center`}>
+                  {['bg-blue-700', 'bg-blue-500', 'bg-blue-400'].map((c, i) => (
+                    <div key={i} className={`w-8 h-8 rounded-full ${c} border-2 border-white flex items-center justify-center`}>
                       <Icon name="User" size={13} className="text-white" />
                     </div>
                   ))}
                 </div>
-                <span className="text-sm text-slate-400">Более <strong className="text-white">500 дел</strong> успешно завершено</span>
+                <span className="text-sm text-slate-500">Более <strong className="text-slate-900">500 дел</strong> успешно завершено</span>
               </div>
             </div>
           </div>
