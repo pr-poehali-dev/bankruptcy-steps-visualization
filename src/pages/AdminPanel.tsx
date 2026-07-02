@@ -4,12 +4,13 @@ import Icon from '@/components/ui/icon';
 import AdminStats from '@/components/admin/AdminStats';
 import AdminLeads from '@/components/admin/AdminLeads';
 import AdminPages from '@/components/admin/AdminPages';
+import AdminBitrix24 from '@/components/admin/AdminBitrix24';
 import { ContentTab, FormsTab, SeoTab, HeroTab, AdvantagesTab, StepsTab, StagesTab, ConsequencesTab, PaymentsTab, IndexTab } from '@/components/admin/AdminSettings';
 import { invalidateContentCache } from '@/hooks/useSiteContent';
 
 const ADMIN_URL = 'https://functions.poehali.dev/f93de05a-95a2-4dbb-bfdd-35104dcbefc5';
 
-type Tab = 'stats' | 'leads' | 'pages' | 'hero' | 'advantages' | 'steps' | 'stages' | 'consequences' | 'payments_page' | 'index_page' | 'content' | 'forms' | 'seo';
+type Tab = 'stats' | 'leads' | 'pages' | 'bitrix24' | 'hero' | 'advantages' | 'steps' | 'stages' | 'consequences' | 'payments_page' | 'index_page' | 'content' | 'forms' | 'seo';
 
 interface Lead {
   id: number;
@@ -92,6 +93,7 @@ const AdminPanel = () => {
       items: [
         { id: 'stats', label: 'Статистика', icon: 'BarChart3' },
         { id: 'leads', label: 'Заявки', icon: 'Inbox' },
+        { id: 'bitrix24', label: 'Битрикс24', icon: 'Zap' },
       ],
     },
     {
@@ -180,6 +182,7 @@ const AdminPanel = () => {
         {tab === 'stats' && <AdminStats stats={stats} />}
         {tab === 'leads' && <AdminLeads leads={leads} onStatusChange={handleLeadStatus} />}
         {tab === 'pages' && <AdminPages session={session} onNavigate={navigate} />}
+        {tab === 'bitrix24' && <AdminBitrix24 session={session} settings={settings} onChange={handleSettingChange} loading={loading} saveMsg={saveMsg} onSave={handleSaveSettings} />}
         {tab === 'hero' && <HeroTab settings={settings} onChange={handleSettingChange} loading={loading} saveMsg={saveMsg} onSave={handleSaveSettings} />}
         {tab === 'advantages' && <AdvantagesTab settings={settings} onChange={handleSettingChange} loading={loading} saveMsg={saveMsg} onSave={handleSaveSettings} />}
         {tab === 'steps' && <StepsTab settings={settings} onChange={handleSettingChange} loading={loading} saveMsg={saveMsg} onSave={handleSaveSettings} />}

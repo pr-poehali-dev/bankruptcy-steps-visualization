@@ -1,6 +1,7 @@
 import json
 import os
 import psycopg2
+import urllib.request
 from psycopg2.extras import RealDictCursor
 
 SCHEMA = os.environ.get('MAIN_DB_SCHEMA', 't_p48458750_bankruptcy_steps_vis')
@@ -213,5 +214,118 @@ def handler(event: dict, context) -> dict:
         conn.commit()
         conn.close()
         return resp(200, {'ok': True})
+
+    # POST /bitrix24/webhook — входящий вебхук от Битрикс24 (смена статуса)
+    if method == 'POST' and path.endswith('/bitrix24/webhook'):
+        event_type = body.get('event', '')
+        data = body.get('data', {})
+        fields = data.get('FIELDS', {})
+        bitrix24_id = str(fields.get('ID', ''))
+        new_status = fields.get('STATUS_ID', '') or fields.get('STAGE_ID', '')
+
+        if bitrix24_id and new_status and event_type in ('ONCRMLEAD*', 'ONCRMLEADUPDATE', 'ONCRMDEALUPDATE'):
+            conn = get_conn()
+            cur = conn.cursor()
+
+            # Читаем маппинг статусов из настроек
+            cur2 = conn.cursor()
+            cur2.execute(f"SELECT key, value FROM {SCHEMA}.site_settings WHERE key LIKE 'bitrix24_status_map_%'")
+            status_map = {r[0].replace('bitrix24_status_map_', ''): r[1] for r in cur2.fetchall()}
+
+            # Находим наш статус по битрикс-статусу
+            our_status = None
+            for our, b24 in status_map.items():
+                if b24 == new_status:
+                    our_status = our
+                    break
+
+            if our_status:
+                cur.execute(
+                    f"UPDATE {SCHEMA}.leads SET status = %s, bitrix24_status = %s, bitrix24_synced_at = NOW() WHERE bitrix24_id = %s",
+                    (our_status, new_status, bitrix24_id)
+                )
+                conn.commit()
+            conn.close()
+        return resp(200, {'ok': True})
+
+    # POST /bitrix24/test — проверить подключение к Битрикс24
+    if method == 'POST' and path.endswith('/bitrix24/test'):
+        webhook_url = os.environ.get('BITRIX24_WEBHOOK_URL', '').strip()
+        if not webhook_url:
+            return resp(400, {'ok': False, 'error': 'BITRIX24_WEBHOOK_URL не задан в секретах'})
+        try:
+            url = webhook_url.rstrip('/') + '/app.info'
+            req = urllib.request.Request(url, method='GET')
+            with urllib.request.urlopen(req, timeout=8) as r:
+                result = json.loads(r.read().decode('utf-8'))
+            if result.get('result'):
+                return resp(200, {'ok': True, 'portal': result['result'].get('PORTAL_URI', ''), 'description': 'Подключение успешно'})
+            return resp(200, {'ok': False, 'error': 'Битрикс24 вернул пустой ответ'})
+        except Exception as e:
+            return resp(200, {'ok': False, 'error': str(e)})
+
+    # GET /bitrix24/leads — лиды с привязкой к Битрикс24
+    if method == 'GET' and path.endswith('/bitrix24/leads'):
+        conn = get_conn()
+        cur = conn.cursor(cursor_factory=RealDictCursor)
+        cur.execute(f"""
+            SELECT id, name, phone, status, bitrix24_id, bitrix24_status, bitrix24_synced_at, created_at
+            FROM {SCHEMA}.leads ORDER BY created_at DESC LIMIT 100
+        """)
+        leads = cur.fetchall()
+        conn.close()
+        return resp(200, {'leads': leads})
+
+    # POST /bitrix24/sync/:id — вручную повторно отправить заявку в Битрикс24
+    if method == 'POST' and '/bitrix24/sync/' in path:
+        parts = path.split('/')
+        lead_id = next((parts[i+1] for i, p in enumerate(parts) if p == 'sync' and i+1 < len(parts)), None)
+        webhook_url = os.environ.get('BITRIX24_WEBHOOK_URL', '').strip()
+        if not webhook_url:
+            return resp(400, {'ok': False, 'error': 'Webhook не настроен'})
+        conn = get_conn()
+        cur = conn.cursor(cursor_factory=RealDictCursor)
+        cur.execute(f"SELECT * FROM {SCHEMA}.leads WHERE id = %s", (lead_id,))
+        lead = cur.fetchone()
+        if not lead:
+            conn.close()
+            return resp(404, {'error': 'Заявка не найдена'})
+
+        cur2 = conn.cursor()
+        cur2.execute(f"SELECT key, value FROM {SCHEMA}.site_settings WHERE key LIKE 'bitrix24_%'")
+        settings = {r[0]: r[1] for r in cur2.fetchall()}
+        entity = settings.get('bitrix24_entity_type', 'lead')
+        source = settings.get('bitrix24_source', 'WEB')
+        responsible = settings.get('bitrix24_responsible_id', '').strip()
+
+        title = f"Заявка с сайта — {lead['name'] or lead['phone']}"
+        comments = f"Телефон: {lead['phone']}\nИмя: {lead['name']}\nСообщение: {lead['message']}\nID заявки на сайте: {lead['id']}"
+
+        if entity == 'deal':
+            method_b24 = 'crm.deal.add'
+            fields = {'TITLE': title, 'SOURCE_ID': source, 'COMMENTS': comments, 'PHONE': [{'VALUE': lead['phone'], 'VALUE_TYPE': 'WORK'}]}
+        else:
+            method_b24 = 'crm.lead.add'
+            fields = {'TITLE': title, 'NAME': lead['name'], 'PHONE': [{'VALUE': lead['phone'], 'VALUE_TYPE': 'WORK'}], 'SOURCE_ID': source, 'COMMENTS': comments, 'STATUS_ID': 'NEW'}
+        if responsible:
+            fields['ASSIGNED_BY_ID'] = responsible
+
+        try:
+            url = webhook_url.rstrip('/') + '/' + method_b24
+            data = json.dumps({'fields': fields}).encode('utf-8')
+            req = urllib.request.Request(url, data=data, headers={'Content-Type': 'application/json'}, method='POST')
+            with urllib.request.urlopen(req, timeout=10) as r:
+                result = json.loads(r.read().decode('utf-8'))
+            bitrix24_id = str(result.get('result', ''))
+            cur2.execute(
+                f"UPDATE {SCHEMA}.leads SET bitrix24_id = %s, bitrix24_status = 'synced', bitrix24_synced_at = NOW() WHERE id = %s",
+                (bitrix24_id, lead_id)
+            )
+            conn.commit()
+            conn.close()
+            return resp(200, {'ok': True, 'bitrix24_id': bitrix24_id})
+        except Exception as e:
+            conn.close()
+            return resp(200, {'ok': False, 'error': str(e)})
 
     return resp(404, {'error': 'Not found'})
