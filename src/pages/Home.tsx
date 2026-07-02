@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
 
@@ -64,6 +65,18 @@ const steps = [
 
 const Home = () => {
   const navigate = useNavigate();
+  const [form, setForm] = useState({ name: '', phone: '', message: '' });
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setSubmitted(true);
+    }, 1000);
+  };
 
   return (
     <div className="min-h-screen bg-slate-50 font-body relative overflow-hidden">
@@ -352,23 +365,134 @@ const Home = () => {
           </div>
         </section>
 
-        {/* CTA */}
+        {/* Consultation form */}
         <section className="pb-24 animate-fade-in" style={{ animationDelay: '0.55s', opacity: 0 }}>
-          <div className="bg-white border border-blue-100 rounded-3xl p-10 md:p-14 text-center shadow-sm">
-            <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center mx-auto mb-6">
-              <Icon name="MessageSquare" size={26} className="text-blue-700" />
+          <div className="bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden">
+            <div className="grid md:grid-cols-2">
+
+              {/* Left info panel */}
+              <div className="bg-blue-900 p-10 md:p-12 flex flex-col justify-between">
+                <div>
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 mb-8">
+                    <span className="w-2 h-2 rounded-full bg-blue-300" />
+                    <span className="text-xs text-blue-200 font-medium">Бесплатная консультация</span>
+                  </div>
+                  <h2 className="font-heading font-extrabold text-3xl text-white leading-tight mb-4">
+                    Расскажите о своей ситуации
+                  </h2>
+                  <p className="text-blue-200 text-sm leading-relaxed mb-10">
+                    Адвокат свяжется с вами в течение рабочего дня, изучит ваш случай
+                    и объяснит, подходит ли вам процедура банкротства.
+                  </p>
+                  <div className="space-y-4">
+                    {[
+                      { icon: 'Clock', text: 'Ответ в течение рабочего дня' },
+                      { icon: 'Lock', text: 'Адвокатская тайна гарантирована' },
+                      { icon: 'BadgeCheck', text: 'Без обязательств и скрытых условий' },
+                    ].map((item, i) => (
+                      <div key={i} className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
+                          <Icon name={item.icon} size={15} className="text-blue-300" fallback="Circle" />
+                        </div>
+                        <span className="text-sm text-blue-100">{item.text}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="mt-10 pt-8 border-t border-white/10">
+                  <div className="text-xs text-blue-400 mb-1">Адвокатское бюро</div>
+                  <div className="font-heading font-bold text-white">«Правовой статус»</div>
+                </div>
+              </div>
+
+              {/* Right form */}
+              <div className="p-10 md:p-12">
+                {submitted ? (
+                  <div className="h-full flex flex-col items-center justify-center text-center py-8">
+                    <div className="w-16 h-16 rounded-2xl bg-teal-50 flex items-center justify-center mb-5">
+                      <Icon name="CheckCheck" size={30} className="text-teal-600" fallback="Check" />
+                    </div>
+                    <h3 className="font-heading font-bold text-2xl text-slate-900 mb-3">Заявка отправлена!</h3>
+                    <p className="text-slate-500 text-sm leading-relaxed max-w-xs">
+                      Адвокат свяжется с вами в течение рабочего дня. Спасибо за обращение в АБ «Правовой статус».
+                    </p>
+                    <button
+                      onClick={() => { setSubmitted(false); setForm({ name: '', phone: '', message: '' }); }}
+                      className="mt-6 text-sm text-blue-700 hover:text-blue-900 transition-colors font-medium"
+                    >
+                      Отправить ещё одну заявку
+                    </button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleSubmit} className="space-y-5">
+                    <div>
+                      <h3 className="font-heading font-bold text-2xl text-slate-900 mb-1">Записаться на консультацию</h3>
+                      <p className="text-sm text-slate-500">Первичный приём — бесплатно</p>
+                    </div>
+
+                    <div className="space-y-4 pt-2">
+                      <div>
+                        <label className="block text-xs font-semibold text-slate-600 mb-1.5 uppercase tracking-wide">Ваше имя</label>
+                        <input
+                          type="text"
+                          required
+                          placeholder="Иван Иванов"
+                          value={form.name}
+                          onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                          className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-slate-600 mb-1.5 uppercase tracking-wide">Телефон</label>
+                        <input
+                          type="tel"
+                          required
+                          placeholder="+7 (___) ___-__-__"
+                          value={form.phone}
+                          onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
+                          className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-slate-600 mb-1.5 uppercase tracking-wide">
+                          Кратко опишите ситуацию <span className="text-slate-400 font-normal normal-case">(необязательно)</span>
+                        </label>
+                        <textarea
+                          rows={3}
+                          placeholder="Сумма долга, количество кредиторов, наличие имущества..."
+                          value={form.message}
+                          onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
+                          className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
+                        />
+                      </div>
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-blue-800 text-white font-semibold text-sm hover:bg-blue-900 transition-colors shadow-md disabled:opacity-70"
+                    >
+                      {loading ? (
+                        <>
+                          <Icon name="Loader" size={16} className="animate-spin" fallback="Circle" />
+                          Отправляем...
+                        </>
+                      ) : (
+                        <>
+                          <Icon name="Send" size={16} />
+                          Отправить заявку
+                        </>
+                      )}
+                    </button>
+
+                    <p className="text-xs text-slate-400 text-center leading-relaxed">
+                      Нажимая кнопку, вы соглашаетесь с обработкой персональных данных
+                    </p>
+                  </form>
+                )}
+              </div>
+
             </div>
-            <h2 className="font-heading font-extrabold text-3xl md:text-4xl text-slate-900 mb-4">
-              Готовы начать? Расскажите о своей ситуации
-            </h2>
-            <p className="text-slate-500 max-w-lg mx-auto mb-8 leading-relaxed">
-              Первая консультация — бесплатно. Адвокат изучит ваш случай и объяснит, подходит ли
-              вам процедура банкротства и каков будет итог.
-            </p>
-            <button className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-blue-800 text-white font-semibold hover:bg-blue-900 transition-colors shadow-md text-sm">
-              <Icon name="Phone" size={16} />
-              Записаться на консультацию
-            </button>
           </div>
         </section>
 
