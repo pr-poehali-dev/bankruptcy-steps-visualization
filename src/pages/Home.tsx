@@ -97,7 +97,7 @@ const Home = () => {
           </div>
           <a
             href="tel:+78001234567"
-            className="hidden md:flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0F2A6B] text-white text-sm font-semibold hover:bg-[#0a1f52] transition-colors"
+            className="hidden md:flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#1B3F7C] text-white text-sm font-semibold hover:bg-[#163270] transition-colors"
           >
             <Icon name="Phone" size={14} />
             Бесплатная консультация
@@ -105,37 +105,35 @@ const Home = () => {
         </div>
       </header>
 
-      {/* Hero — dark */}
-      <section className="relative overflow-hidden bg-[#0A1628]">
+      {/* Hero */}
+      <section className="relative overflow-hidden bg-[#1B3F7C]">
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute top-0 right-0 w-[700px] h-[700px] rounded-full bg-blue-600/10 blur-[120px]" />
-          <div className="absolute bottom-0 left-[-100px] w-[500px] h-[500px] rounded-full bg-blue-900/30 blur-[100px]" />
-          {/* Grid texture */}
-          <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
+          <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-blue-400/15 blur-[100px]" />
+          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full bg-blue-900/20 blur-[100px]" />
         </div>
-        <div className="relative z-10 max-w-6xl mx-auto px-6 py-24 md:py-32 grid md:grid-cols-2 gap-14 items-center">
+        <div className="relative z-10 max-w-6xl mx-auto px-6 py-20 md:py-28 grid md:grid-cols-2 gap-14 items-center">
           <div className="animate-fade-in">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/8 border border-white/10 mb-8">
-              <span className="w-2 h-2 rounded-full bg-blue-400" />
-              <span className="text-sm text-blue-200">Банкротство физических лиц</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 border border-white/20 mb-8">
+              <span className="w-2 h-2 rounded-full bg-blue-200" />
+              <span className="text-sm text-blue-100">Банкротство физических лиц</span>
             </div>
             <h1 className="font-heading font-extrabold text-4xl md:text-6xl text-white leading-[1.05] mb-6">
               Избавьтесь от долгов
               <br />
-              <span className="text-blue-400">законно и навсегда</span>
+              <span className="text-blue-200">законно и навсегда</span>
             </h1>
-            <p className="text-slate-400 text-lg leading-relaxed mb-10 max-w-lg">
+            <p className="text-blue-100/80 text-lg leading-relaxed mb-10 max-w-lg">
               Адвокатское бюро «Правовой статус» проведёт процедуру банкротства
               под ключ — от первичного анализа до полного списания задолженности.
             </p>
             <div className="flex flex-wrap gap-3">
-              <button className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-blue-500 text-white font-semibold text-sm hover:bg-blue-400 transition-colors shadow-lg shadow-blue-900/40">
+              <button className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-white text-[#1B3F7C] font-semibold text-sm hover:bg-blue-50 transition-colors shadow-md">
                 <Icon name="MessageSquare" size={16} />
                 Получить консультацию
               </button>
               <button
                 onClick={() => navigate('/stages')}
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-white/8 border border-white/15 text-white font-semibold text-sm hover:bg-white/15 transition-all"
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-white/15 border border-white/25 text-white font-semibold text-sm hover:bg-white/25 transition-all"
               >
                 Как это работает
                 <Icon name="ArrowRight" size={16} />
@@ -145,8 +143,8 @@ const Home = () => {
 
           {/* Hero aside */}
           <div className="animate-fade-in" style={{ animationDelay: '0.15s', opacity: 0 }}>
-            <div className="bg-white/5 border border-white/10 rounded-3xl p-8 space-y-4 backdrop-blur-sm">
-              <div className="text-xs font-heading font-semibold text-blue-400 uppercase tracking-widest mb-4">Ваш результат</div>
+            <div className="bg-white/10 border border-white/20 rounded-3xl p-8 space-y-4 backdrop-blur-sm">
+              <div className="text-xs font-heading font-semibold text-blue-200 uppercase tracking-widest mb-4">Ваш результат</div>
               {[
                 'Полное списание долгов по решению суда',
                 'Единственное жильё остаётся у вас',
@@ -155,8 +153,8 @@ const Home = () => {
                 'Чистая жизнь без долгового бремени',
               ].map((text, i) => (
                 <div key={i} className="flex items-center gap-3">
-                  <div className="w-5 h-5 shrink-0 rounded-full bg-blue-500/20 flex items-center justify-center">
-                    <Icon name="Check" size={11} className="text-blue-400" fallback="Check" />
+                  <div className="w-5 h-5 shrink-0 rounded-full bg-white/20 flex items-center justify-center">
+                    <Icon name="Check" size={11} className="text-white" fallback="Check" />
                   </div>
                   <span className="text-slate-300 text-sm">{text}</span>
                 </div>
@@ -164,7 +162,7 @@ const Home = () => {
               <div className="pt-5 border-t border-white/10 flex items-center gap-3">
                 <div className="flex -space-x-2">
                   {['bg-blue-600', 'bg-blue-500', 'bg-blue-400'].map((c, i) => (
-                    <div key={i} className={`w-8 h-8 rounded-full ${c} border-2 border-[#0A1628] flex items-center justify-center`}>
+                    <div key={i} className={`w-8 h-8 rounded-full ${c} border-2 border-[#1B3F7C] flex items-center justify-center`}>
                       <Icon name="User" size={13} className="text-white" />
                     </div>
                   ))}
@@ -192,11 +190,11 @@ const Home = () => {
             {advantages.map((a, i) => (
               <div
                 key={i}
-                className="group bg-slate-50 rounded-2xl border border-slate-100 p-6 hover:bg-[#0F2A6B] hover:border-[#0F2A6B] transition-all duration-300 animate-fade-in"
+                className="group bg-slate-50 rounded-2xl border border-slate-100 p-6 hover:bg-[#1B3F7C] hover:border-[#1B3F7C] transition-all duration-300 animate-fade-in"
                 style={{ animationDelay: `${0.25 + i * 0.08}s`, opacity: 0 }}
               >
                 <div className="w-11 h-11 rounded-xl bg-white group-hover:bg-white/10 border border-slate-200 group-hover:border-white/10 flex items-center justify-center mb-4 transition-all">
-                  <Icon name={a.icon} size={20} className="text-[#0F2A6B] group-hover:text-blue-300 transition-colors" fallback="Star" />
+                  <Icon name={a.icon} size={20} className="text-[#1B3F7C] group-hover:text-blue-200 transition-colors" fallback="Star" />
                 </div>
                 <h3 className="font-heading font-bold text-slate-900 group-hover:text-white mb-2 transition-colors">{a.title}</h3>
                 <p className="text-sm text-slate-500 group-hover:text-blue-200 leading-relaxed transition-colors">{a.desc}</p>
@@ -309,7 +307,7 @@ const Home = () => {
                     </span>
                   ))}
                 </div>
-                <div className="flex items-center gap-2 text-[#0F2A6B] font-semibold text-sm group-hover:gap-3 transition-all">
+                <div className="flex items-center gap-2 text-[#1B3F7C] font-semibold text-sm group-hover:gap-3 transition-all">
                   {card.link}
                   <Icon name="ArrowRight" size={15} />
                 </div>
@@ -321,7 +319,7 @@ const Home = () => {
 
         {/* Stats */}
         <section className="pb-20 animate-fade-in" style={{ animationDelay: '0.5s', opacity: 0 }}>
-          <div className="bg-[#0A1628] rounded-2xl grid grid-cols-2 md:grid-cols-4">
+          <div className="bg-[#1B3F7C] rounded-2xl grid grid-cols-2 md:grid-cols-4">
             {[
               { icon: 'Users', value: '500+', label: 'завершённых дел' },
               { icon: 'Timer', value: '6–12 мес', label: 'средний срок' },
@@ -343,7 +341,7 @@ const Home = () => {
             <div className="grid md:grid-cols-2">
 
               {/* Left info panel */}
-              <div className="bg-[#0A1628] p-10 md:p-12 flex flex-col justify-between">
+              <div className="bg-[#1B3F7C] p-10 md:p-12 flex flex-col justify-between">
                 <div>
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 mb-8">
                     <span className="w-2 h-2 rounded-full bg-blue-300" />
@@ -442,7 +440,7 @@ const Home = () => {
                     <button
                       type="submit"
                       disabled={loading}
-                      className="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-[#0F2A6B] text-white font-semibold text-sm hover:bg-[#0a1f52] transition-colors shadow-md disabled:opacity-70"
+                      className="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-[#1B3F7C] text-white font-semibold text-sm hover:bg-[#163270] transition-colors shadow-md disabled:opacity-70"
                     >
                       {loading ? (
                         <>
