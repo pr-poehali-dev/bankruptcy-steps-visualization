@@ -90,11 +90,17 @@ const Home = () => {
       <header className="relative z-10 border-b border-slate-200 bg-white/80 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <img
-              src="https://cdn.poehali.dev/projects/3e7e35fe-ef29-4a30-b52d-2ba872294646/bucket/cf56bfce-81fa-4842-abc6-423b7363932b.jpg"
-              alt="АБ Правовой статус"
-              className="h-10 w-auto object-contain"
-            />
+            <div className="h-10 w-10 overflow-hidden flex items-start justify-center">
+              <img
+                src="https://cdn.poehali.dev/projects/3e7e35fe-ef29-4a30-b52d-2ba872294646/bucket/cf56bfce-81fa-4842-abc6-423b7363932b.jpg"
+                alt="АБ Правовой статус"
+                className="h-[185%] w-auto object-contain object-top"
+              />
+            </div>
+            <div>
+              <div className="font-heading font-bold text-slate-900 text-sm leading-none">АБ «Правовой статус»</div>
+              <div className="text-xs text-slate-500 leading-none mt-0.5">Адвокатское бюро</div>
+            </div>
           </div>
           <a
             href="tel:+78001234567"
@@ -397,12 +403,18 @@ const Home = () => {
                     ))}
                   </div>
                 </div>
-                <div className="mt-10 pt-8 border-t border-white/10">
-                  <img
-                    src="https://cdn.poehali.dev/projects/3e7e35fe-ef29-4a30-b52d-2ba872294646/bucket/cf56bfce-81fa-4842-abc6-423b7363932b.jpg"
-                    alt="АБ Правовой статус"
-                    className="h-14 w-auto object-contain brightness-0 invert"
-                  />
+                <div className="mt-10 pt-8 border-t border-white/10 flex items-center gap-3">
+                  <div className="h-10 w-10 overflow-hidden flex items-start justify-center shrink-0">
+                    <img
+                      src="https://cdn.poehali.dev/projects/3e7e35fe-ef29-4a30-b52d-2ba872294646/bucket/cf56bfce-81fa-4842-abc6-423b7363932b.jpg"
+                      alt="АБ Правовой статус"
+                      className="h-[185%] w-auto object-contain object-top brightness-0 invert"
+                    />
+                  </div>
+                  <div>
+                    <div className="text-xs text-blue-400">Адвокатское бюро</div>
+                    <div className="font-heading font-bold text-white text-sm">«Правовой статус»</div>
+                  </div>
                 </div>
               </div>
 
@@ -503,11 +515,14 @@ const Home = () => {
       <footer className="relative z-10 border-t border-slate-200 bg-white">
         <div className="max-w-6xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <img
-              src="https://cdn.poehali.dev/projects/3e7e35fe-ef29-4a30-b52d-2ba872294646/bucket/cf56bfce-81fa-4842-abc6-423b7363932b.jpg"
-              alt="АБ Правовой статус"
-              className="h-8 w-auto object-contain"
-            />
+            <div className="h-8 w-8 overflow-hidden flex items-start justify-center">
+              <img
+                src="https://cdn.poehali.dev/projects/3e7e35fe-ef29-4a30-b52d-2ba872294646/bucket/cf56bfce-81fa-4842-abc6-423b7363932b.jpg"
+                alt="АБ Правовой статус"
+                className="h-[185%] w-auto object-contain object-top"
+              />
+            </div>
+            <span className="text-sm text-slate-600 font-medium">Адвокатское бюро «Правовой статус»</span>
           </div>
           <span className="text-xs text-slate-400">Юридическая помощь в делах о банкротстве физических лиц</span>
         </div>
