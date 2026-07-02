@@ -73,14 +73,14 @@ const Index = () => {
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/15 border border-white/20 mb-5">
                 <Icon name="ListOrdered" size={13} className="text-blue-200" />
-                <span className="text-xs text-blue-100 font-medium">Пошаговая инструкция</span>
+                <span className="text-xs text-blue-100 font-medium">{g('index_tag', 'Пошаговая инструкция')}</span>
               </div>
               <h1 className="font-heading font-extrabold text-3xl md:text-5xl text-white leading-tight">
-                Этапы банкротства<br />физического лица
+                {g('index_title_1', 'Этапы банкротства')}<br />{g('index_title_2', 'физического лица')}
               </h1>
             </div>
             <p className="text-blue-200 text-sm max-w-xs md:text-right leading-relaxed">
-              Нажмите на любой этап — откроется подробное описание шага
+              {g('index_desc', 'Нажмите на любой этап — откроется подробное описание шага')}
             </p>
           </div>
         </div>
@@ -142,10 +142,10 @@ const Index = () => {
           {/* Stats */}
           <div className="mt-12 bg-[#1B3F7C] rounded-2xl grid grid-cols-2 md:grid-cols-4 animate-fade-in" style={{ animationDelay: '0.7s', opacity: 0 }}>
             {[
-              { icon: 'Wallet', value: 'от 25 000 ₽', label: 'минимальный долг для МФЦ' },
-              { icon: 'Timer', value: '6–12 мес', label: 'средний срок процедуры' },
-              { icon: 'Home', value: 'сохраняется', label: 'единственное жильё' },
-              { icon: 'ShieldCheck', value: '100%', label: 'списание долгов' },
+              { icon: 'Wallet',      value: g('index_stat_1_value', 'от 25 000 ₽'),  label: g('index_stat_1_label', 'минимальный долг для МФЦ') },
+              { icon: 'Timer',       value: g('index_stat_2_value', '6–12 мес'),      label: g('index_stat_2_label', 'средний срок процедуры') },
+              { icon: 'Home',        value: g('index_stat_3_value', 'сохраняется'),   label: g('index_stat_3_label', 'единственное жильё') },
+              { icon: 'ShieldCheck', value: g('index_stat_4_value', '100%'),          label: g('index_stat_4_label', 'списание долгов') },
             ].map((s, i) => (
               <div key={s.label} className={`p-6 text-center ${i < 3 ? 'border-r border-white/10' : ''}`}>
                 <Icon name={s.icon} size={20} className="text-blue-300 mx-auto mb-2" fallback="Star" />
@@ -162,8 +162,8 @@ const Index = () => {
                 <Icon name="AlertTriangle" size={22} className="text-amber-600" fallback="Alert" />
               </div>
               <div>
-                <h3 className="font-heading font-bold text-slate-900">Последствия банкротства</h3>
-                <p className="text-sm text-slate-500">Ограничения, сроки, что сохраняется — на отдельной странице</p>
+                <h3 className="font-heading font-bold text-slate-900">{g('card_consequences_title', 'Последствия банкротства')}</h3>
+                <p className="text-sm text-slate-500">{g('card_consequences_desc', 'Ограничения, сроки, что сохраняется — на отдельной странице')}</p>
               </div>
             </div>
             <button

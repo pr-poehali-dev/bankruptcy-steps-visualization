@@ -4,12 +4,12 @@ import Icon from '@/components/ui/icon';
 import AdminStats from '@/components/admin/AdminStats';
 import AdminLeads from '@/components/admin/AdminLeads';
 import AdminPages from '@/components/admin/AdminPages';
-import { ContentTab, FormsTab, SeoTab, HeroTab, AdvantagesTab, StepsTab, StagesTab, ConsequencesTab } from '@/components/admin/AdminSettings';
+import { ContentTab, FormsTab, SeoTab, HeroTab, AdvantagesTab, StepsTab, StagesTab, ConsequencesTab, PaymentsTab, IndexTab } from '@/components/admin/AdminSettings';
 import { invalidateContentCache } from '@/hooks/useSiteContent';
 
 const ADMIN_URL = 'https://functions.poehali.dev/f93de05a-95a2-4dbb-bfdd-35104dcbefc5';
 
-type Tab = 'stats' | 'leads' | 'pages' | 'hero' | 'advantages' | 'steps' | 'stages' | 'consequences' | 'content' | 'forms' | 'seo';
+type Tab = 'stats' | 'leads' | 'pages' | 'hero' | 'advantages' | 'steps' | 'stages' | 'consequences' | 'payments_page' | 'index_page' | 'content' | 'forms' | 'seo';
 
 interface Lead {
   id: number;
@@ -108,8 +108,10 @@ const AdminPanel = () => {
       group: 'Страницы',
       items: [
         { id: 'pages', label: 'Мои страницы', icon: 'FilePlus' },
-        { id: 'stages', label: 'Этапы', icon: 'ListOrdered' },
+        { id: 'index_page', label: 'Этапы', icon: 'ListOrdered' },
+        { id: 'stages', label: 'Карточки этапов', icon: 'LayoutList' },
         { id: 'consequences', label: 'Последствия', icon: 'AlertTriangle' },
+        { id: 'payments_page', label: 'Платежи', icon: 'Receipt' },
       ],
     },
     {
@@ -183,6 +185,8 @@ const AdminPanel = () => {
         {tab === 'steps' && <StepsTab settings={settings} onChange={handleSettingChange} loading={loading} saveMsg={saveMsg} onSave={handleSaveSettings} />}
         {tab === 'stages' && <StagesTab settings={settings} onChange={handleSettingChange} loading={loading} saveMsg={saveMsg} onSave={handleSaveSettings} />}
         {tab === 'consequences' && <ConsequencesTab settings={settings} onChange={handleSettingChange} loading={loading} saveMsg={saveMsg} onSave={handleSaveSettings} />}
+        {tab === 'payments_page' && <PaymentsTab settings={settings} onChange={handleSettingChange} loading={loading} saveMsg={saveMsg} onSave={handleSaveSettings} />}
+        {tab === 'index_page' && <IndexTab settings={settings} onChange={handleSettingChange} loading={loading} saveMsg={saveMsg} onSave={handleSaveSettings} />}
         {tab === 'content' && <ContentTab settings={settings} onChange={handleSettingChange} loading={loading} saveMsg={saveMsg} onSave={handleSaveSettings} />}
         {tab === 'forms' && <FormsTab settings={settings} onChange={handleSettingChange} loading={loading} saveMsg={saveMsg} onSave={handleSaveSettings} />}
         {tab === 'seo' && <SeoTab settings={settings} onChange={handleSettingChange} loading={loading} saveMsg={saveMsg} onSave={handleSaveSettings} />}

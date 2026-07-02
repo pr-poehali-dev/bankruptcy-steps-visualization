@@ -1,126 +1,40 @@
 import { useNavigate } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
+import { useSiteContent } from '@/hooks/useSiteContent';
 
-const categories = [
-  {
-    title: 'Судебные расходы',
-    icon: 'Landmark',
-    color: '#1E3A8A',
-    bg: 'bg-blue-50',
-    textColor: 'text-blue-800',
-    items: [
-      {
-        label: 'Государственная пошлина',
-        value: '300 ₽',
-        note: 'Оплачивается при подаче заявления в арбитражный суд',
-        fixed: true,
-      },
-      {
-        label: 'Депозит на вознаграждение финансового управляющего',
-        value: '25 000 ₽',
-        note: 'За одну процедуру (реструктуризация или реализация). Вносится на депозит суда',
-        fixed: true,
-      },
-      {
-        label: 'Депозит при двух процедурах',
-        value: '50 000 ₽',
-        note: 'Если сначала реструктуризация, затем реализация имущества',
-        fixed: false,
-      },
-    ],
-  },
-  {
-    title: 'Вознаграждение финансового управляющего',
-    icon: 'UserCheck',
-    color: '#1D4ED8',
-    bg: 'bg-blue-50',
-    textColor: 'text-blue-700',
-    items: [
-      {
-        label: 'Фиксированное вознаграждение',
-        value: '25 000 ₽',
-        note: 'За каждую процедуру — выплачивается из депозита суда',
-        fixed: true,
-      },
-      {
-        label: 'Процент от реализованного имущества',
-        value: '7%',
-        note: 'От суммы вырученных средств при продаже имущества должника',
-        fixed: false,
-      },
-      {
-        label: 'Процент от погашенных требований',
-        value: '7%',
-        note: 'При реструктуризации — от суммы, фактически выплаченной кредиторам',
-        fixed: false,
-      },
-    ],
-  },
-  {
-    title: 'Публикации и уведомления',
-    icon: 'Newspaper',
-    color: '#2563EB',
-    bg: 'bg-blue-50',
-    textColor: 'text-blue-600',
-    items: [
-      {
-        label: 'Публикация в газете «Коммерсантъ»',
-        value: '~11 000 ₽',
-        note: 'За каждую процедуру. Цена зависит от объёма текста',
-        fixed: false,
-      },
-      {
-        label: 'Публикации в ЕФРСБ',
-        value: '~5 000–10 000 ₽',
-        note: 'Единый федеральный реестр сведений о банкротстве. Несколько обязательных публикаций',
-        fixed: false,
-      },
-      {
-        label: 'Почтовые уведомления кредиторам',
-        value: '~2 000–5 000 ₽',
-        note: 'Стоимость зависит от количества кредиторов',
-        fixed: false,
-      },
-    ],
-  },
-  {
-    title: 'Дополнительные расходы',
-    icon: 'Receipt',
-    color: '#0F766E',
-    bg: 'bg-teal-50',
-    textColor: 'text-teal-700',
-    items: [
-      {
-        label: 'Оценка имущества',
-        value: 'от 5 000 ₽',
-        note: 'При наличии имущества, подлежащего реализации на торгах',
-        fixed: false,
-      },
-      {
-        label: 'Организация торгов (электронная площадка)',
-        value: '~5 000–15 000 ₽',
-        note: 'Зависит от площадки и стоимости лота',
-        fixed: false,
-      },
-      {
-        label: 'Юридическое сопровождение (адвокат/юрист)',
-        value: 'от 80 000 ₽',
-        note: 'Стоимость услуг представителя — зависит от сложности дела',
-        fixed: false,
-      },
-    ],
-  },
+const CAT_META = [
+  { icon: 'Landmark',  color: '#1E3A8A', bg: 'bg-blue-50',  textColor: 'text-blue-800', fixed: [true,  true,  false] },
+  { icon: 'UserCheck', color: '#1D4ED8', bg: 'bg-blue-50',  textColor: 'text-blue-700', fixed: [true,  false, false] },
+  { icon: 'Newspaper', color: '#2563EB', bg: 'bg-blue-50',  textColor: 'text-blue-600', fixed: [false, false, false] },
+  { icon: 'Receipt',   color: '#0F766E', bg: 'bg-teal-50',  textColor: 'text-teal-700', fixed: [false, false, false] },
 ];
 
-const summary = [
-  { label: 'Минимальные расходы (через МФЦ, без имущества)', value: '0 ₽', sub: 'внесудебное банкротство — бесплатно', color: '#0F766E' },
-  { label: 'Минимальные расходы (через суд)', value: '~50 000 ₽', sub: 'госпошлина + управляющий + публикации', color: '#1D4ED8' },
-  { label: 'Средние расходы', value: '~100 000–150 000 ₽', sub: 'с учётом юридического сопровождения', color: '#2563EB' },
-  { label: 'При наличии имущества', value: 'индивидуально', sub: 'зависит от состава и стоимости активов', color: '#1E3A8A' },
-];
+const SUM_COLORS = ['#0F766E', '#1D4ED8', '#2563EB', '#1E3A8A'];
 
 const Payments = () => {
   const navigate = useNavigate();
+  const { g } = useSiteContent();
+
+  const categories = CAT_META.map((meta, ci) => {
+    const n = ci + 1;
+    return {
+      ...meta,
+      title: g(`pay_cat_${n}_title`, ['Судебные расходы', 'Вознаграждение финансового управляющего', 'Публикации и уведомления', 'Дополнительные расходы'][ci]),
+      items: [1, 2, 3].map((ii, idx) => ({
+        label: g(`pay_cat_${n}_i${ii}_label`, ''),
+        value: g(`pay_cat_${n}_i${ii}_value`, ''),
+        note:  g(`pay_cat_${n}_i${ii}_note`, ''),
+        fixed: meta.fixed[idx],
+      })),
+    };
+  });
+
+  const summary = [1, 2, 3, 4].map((n, i) => ({
+    value: g(`pay_sum_${n}_value`, ''),
+    label: g(`pay_sum_${n}_label`, ''),
+    sub:   g(`pay_sum_${n}_sub`, ''),
+    color: SUM_COLORS[i],
+  }));
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 overflow-hidden relative font-body">
@@ -139,7 +53,7 @@ const Payments = () => {
           Главная
         </button>
         <span className="text-slate-300">/</span>
-        <span className="text-sm text-slate-700 font-medium">Обязательные платежи</span>
+        <span className="text-sm text-slate-700 font-medium">{g('pay_page_title_3', 'Обязательные платежи')}</span>
       </nav>
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 pt-12 pb-24">
@@ -148,14 +62,14 @@ const Payments = () => {
         <div className="text-center mb-14 animate-fade-in">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slate-200 shadow-sm mb-5">
             <span className="w-2 h-2 rounded-full bg-blue-700" />
-            <span className="text-sm text-slate-600">Финансовая сторона процедуры</span>
+            <span className="text-sm text-slate-600">{g('pay_page_tag', 'Финансовая сторона процедуры')}</span>
           </div>
           <h1 className="font-heading font-extrabold text-4xl md:text-6xl text-slate-900 mb-4">
-            Размеры <span className="text-blue-800">обязательных</span>
-            <br />платежей
+            {g('pay_page_title_1', 'Размеры')} <span className="text-blue-800">{g('pay_page_title_2', 'обязательных')}</span>
+            <br />{g('pay_page_title_3', 'платежей')}
           </h1>
           <p className="text-slate-500 text-lg max-w-2xl mx-auto">
-            Все расходы, которые несёт должник при прохождении процедуры банкротства физического лица
+            {g('pay_page_desc', 'Все расходы, которые несёт должник при прохождении процедуры банкротства физического лица')}
           </p>
         </div>
 
@@ -166,9 +80,7 @@ const Payments = () => {
         >
           {summary.map((s, i) => (
             <div key={i} className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
-              <div className="font-heading font-black text-2xl mb-1" style={{ color: s.color }}>
-                {s.value}
-              </div>
+              <div className="font-heading font-black text-2xl mb-1" style={{ color: s.color }}>{s.value}</div>
               <div className="font-semibold text-slate-800 text-sm mb-1">{s.label}</div>
               <div className="text-xs text-slate-400">{s.sub}</div>
             </div>
@@ -183,17 +95,12 @@ const Payments = () => {
               className="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm animate-fade-in"
               style={{ animationDelay: `${0.15 + ci * 0.08}s`, opacity: 0 }}
             >
-              {/* Category header */}
               <div className="flex items-center gap-4 px-8 py-5 border-b border-slate-100">
-                <div
-                  className={`w-10 h-10 rounded-xl ${cat.bg} flex items-center justify-center`}
-                >
+                <div className={`w-10 h-10 rounded-xl ${cat.bg} flex items-center justify-center`}>
                   <Icon name={cat.icon} size={20} className={cat.textColor} fallback="Circle" />
                 </div>
                 <h2 className="font-heading font-bold text-lg text-slate-900">{cat.title}</h2>
               </div>
-
-              {/* Items */}
               <div className="divide-y divide-slate-100">
                 {cat.items.map((item, ii) => (
                   <div key={ii} className="px-8 py-5 flex flex-col md:flex-row md:items-center gap-3 md:gap-6 hover:bg-slate-50 transition-colors">
@@ -208,10 +115,7 @@ const Payments = () => {
                       </div>
                       <p className="text-sm text-slate-400 mt-1">{item.note}</p>
                     </div>
-                    <div
-                      className="shrink-0 font-heading font-black text-2xl md:text-right"
-                      style={{ color: cat.color }}
-                    >
+                    <div className="shrink-0 font-heading font-black text-2xl md:text-right" style={{ color: cat.color }}>
                       {item.value}
                     </div>
                   </div>
@@ -232,17 +136,15 @@ const Payments = () => {
             </div>
             <div className="flex-1">
               <h3 className="font-heading font-bold text-xl text-white mb-2">
-                Внесудебное банкротство через МФЦ — бесплатно
+                {g('pay_mfc_title', 'Внесудебное банкротство через МФЦ — бесплатно')}
               </h3>
               <p className="text-teal-200 text-sm leading-relaxed">
-                Если долг от <strong className="text-white">25 000 до 1 000 000 ₽</strong> и исполнительные производства окончены
-                в связи с отсутствием имущества — можно подать на банкротство через МФЦ.
-                Госпошлина, публикации и управляющий не требуются. Процедура занимает 6 месяцев.
+                {g('pay_mfc_text', 'Если долг от 25 000 до 1 000 000 ₽ и исполнительные производства окончены в связи с отсутствием имущества — можно подать на банкротство через МФЦ. Госпошлина, публикации и управляющий не требуются. Процедура занимает 6 месяцев.')}
               </p>
             </div>
             <div className="shrink-0 text-center">
-              <div className="font-heading font-black text-4xl text-white">0 ₽</div>
-              <div className="text-teal-300 text-sm">через МФЦ</div>
+              <div className="font-heading font-black text-4xl text-white">{g('pay_mfc_value', '0 ₽')}</div>
+              <div className="text-teal-300 text-sm">{g('pay_mfc_sub', 'через МФЦ')}</div>
             </div>
           </div>
         </div>
@@ -254,9 +156,7 @@ const Payments = () => {
         >
           <Icon name="Info" size={20} className="text-blue-600 mt-0.5 shrink-0" fallback="Circle" />
           <p className="text-sm text-blue-800 leading-relaxed">
-            <strong>Важно:</strong> указанные суммы актуальны по состоянию на 2025 год. Итоговая стоимость
-            зависит от количества кредиторов, наличия и состава имущества, а также необходимости
-            проведения торгов. Адвокаты АБ «Правовой статус» рассчитают точную стоимость на первичной консультации.
+            <strong>Важно:</strong> {g('pay_bottom_note', 'указанные суммы актуальны по состоянию на 2025 год.')}
           </p>
         </div>
 
@@ -270,14 +170,14 @@ const Payments = () => {
             className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-blue-800 text-white font-semibold text-sm hover:bg-blue-900 transition-colors shadow-md"
           >
             <Icon name="ListOrdered" size={16} fallback="List" />
-            Этапы процедуры
+            {g('card_stages_title', 'Этапы процедуры')}
           </button>
           <button
             onClick={() => navigate('/consequences')}
             className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-white border border-slate-200 text-slate-700 font-semibold text-sm hover:border-blue-200 hover:text-blue-800 transition-all shadow-sm"
           >
             <Icon name="AlertTriangle" size={16} fallback="Alert" />
-            Последствия банкротства
+            {g('card_consequences_title', 'Последствия банкротства')}
           </button>
         </div>
 

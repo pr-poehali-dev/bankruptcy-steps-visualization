@@ -475,3 +475,101 @@ export const ConsequencesTab = ({ settings, onChange, loading, saveMsg, onSave }
     <SaveBar loading={loading} saveMsg={saveMsg} onSave={onSave} />
   </div>
 );
+
+// ─── Payments Tab ─────────────────────────────────────────────────────────────
+
+interface PaymentsTabProps { settings: Settings; onChange: (k: string, v: string) => void; loading: boolean; saveMsg: string; onSave: () => void; }
+
+export const PaymentsTab = ({ settings, onChange, loading, saveMsg, onSave }: PaymentsTabProps) => (
+  <div className="space-y-5">
+    <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+      <h3 className="font-heading font-bold text-slate-900 mb-5">Заголовок страницы</h3>
+      <div className="space-y-4">
+        {textInput('pay_page_tag', 'Тег', settings['pay_page_tag'] || '', onChange)}
+        {textInput('pay_page_title_1', 'Заголовок слово 1', settings['pay_page_title_1'] || '', onChange)}
+        {textInput('pay_page_title_2', 'Заголовок слово 2 (синее)', settings['pay_page_title_2'] || '', onChange)}
+        {textInput('pay_page_title_3', 'Заголовок слово 3', settings['pay_page_title_3'] || '', onChange)}
+        {textareaInput('pay_page_desc', 'Описание', settings['pay_page_desc'] || '', onChange)}
+      </div>
+    </div>
+    <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+      <h3 className="font-heading font-bold text-slate-900 mb-5">Карточки итогов</h3>
+      <div className="grid sm:grid-cols-2 gap-4">
+        {[1,2,3,4].map(n => (
+          <div key={n} className="p-4 rounded-xl border border-slate-100 bg-slate-50 space-y-3">
+            <div className="text-xs font-bold text-slate-500 uppercase">Карточка {n}</div>
+            {textInput(`pay_sum_${n}_value`, 'Значение', settings[`pay_sum_${n}_value`] || '', onChange)}
+            {textInput(`pay_sum_${n}_label`, 'Заголовок', settings[`pay_sum_${n}_label`] || '', onChange)}
+            {textInput(`pay_sum_${n}_sub`, 'Подпись', settings[`pay_sum_${n}_sub`] || '', onChange)}
+          </div>
+        ))}
+      </div>
+    </div>
+    {[
+      { n: 1, title: 'Категория 1 — Судебные расходы' },
+      { n: 2, title: 'Категория 2 — Вознаграждение управляющего' },
+      { n: 3, title: 'Категория 3 — Публикации и уведомления' },
+      { n: 4, title: 'Категория 4 — Дополнительные расходы' },
+    ].map(({ n, title }) => (
+      <div key={n} className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+        <h3 className="font-heading font-bold text-slate-900 mb-4">{title}</h3>
+        {textInput(`pay_cat_${n}_title`, 'Название категории', settings[`pay_cat_${n}_title`] || '', onChange)}
+        <div className="mt-4 space-y-4">
+          {[1,2,3].map(i => (
+            <div key={i} className="p-4 rounded-xl border border-slate-100 bg-slate-50 space-y-3">
+              <div className="text-xs font-bold text-slate-500 uppercase">Строка {i}</div>
+              {textInput(`pay_cat_${n}_i${i}_label`, 'Название', settings[`pay_cat_${n}_i${i}_label`] || '', onChange)}
+              {textInput(`pay_cat_${n}_i${i}_value`, 'Сумма', settings[`pay_cat_${n}_i${i}_value`] || '', onChange)}
+              {textareaInput(`pay_cat_${n}_i${i}_note`, 'Примечание', settings[`pay_cat_${n}_i${i}_note`] || '', onChange)}
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+    <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+      <h3 className="font-heading font-bold text-slate-900 mb-5">Блок МФЦ</h3>
+      <div className="space-y-4">
+        {textInput('pay_mfc_title', 'Заголовок', settings['pay_mfc_title'] || '', onChange)}
+        {textareaInput('pay_mfc_text', 'Текст', settings['pay_mfc_text'] || '', onChange)}
+        {textInput('pay_mfc_value', 'Сумма (крупная)', settings['pay_mfc_value'] || '', onChange)}
+        {textInput('pay_mfc_sub', 'Подпись к сумме', settings['pay_mfc_sub'] || '', onChange)}
+      </div>
+    </div>
+    <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+      <h3 className="font-heading font-bold text-slate-900 mb-3">Нижняя плашка «Важно»</h3>
+      {textareaInput('pay_bottom_note', 'Текст', settings['pay_bottom_note'] || '', onChange)}
+    </div>
+    <SaveBar loading={loading} saveMsg={saveMsg} onSave={onSave} />
+  </div>
+);
+
+// ─── Index Tab ────────────────────────────────────────────────────────────────
+
+interface IndexTabProps { settings: Settings; onChange: (k: string, v: string) => void; loading: boolean; saveMsg: string; onSave: () => void; }
+
+export const IndexTab = ({ settings, onChange, loading, saveMsg, onSave }: IndexTabProps) => (
+  <div className="space-y-5">
+    <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+      <h3 className="font-heading font-bold text-slate-900 mb-5">Hero-полоса</h3>
+      <div className="space-y-4">
+        {textInput('index_tag', 'Тег', settings['index_tag'] || '', onChange)}
+        {textInput('index_title_1', 'Заголовок строка 1', settings['index_title_1'] || '', onChange)}
+        {textInput('index_title_2', 'Заголовок строка 2', settings['index_title_2'] || '', onChange)}
+        {textInput('index_desc', 'Подпись', settings['index_desc'] || '', onChange)}
+      </div>
+    </div>
+    <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+      <h3 className="font-heading font-bold text-slate-900 mb-5">Мини-статистика</h3>
+      <div className="grid sm:grid-cols-2 gap-4">
+        {[1,2,3,4].map(n => (
+          <div key={n} className="p-4 rounded-xl border border-slate-100 bg-slate-50 space-y-3">
+            <div className="text-xs font-bold text-slate-500 uppercase">Блок {n}</div>
+            {textInput(`index_stat_${n}_value`, 'Значение', settings[`index_stat_${n}_value`] || '', onChange)}
+            {textInput(`index_stat_${n}_label`, 'Подпись', settings[`index_stat_${n}_label`] || '', onChange)}
+          </div>
+        ))}
+      </div>
+    </div>
+    <SaveBar loading={loading} saveMsg={saveMsg} onSave={onSave} />
+  </div>
+);
