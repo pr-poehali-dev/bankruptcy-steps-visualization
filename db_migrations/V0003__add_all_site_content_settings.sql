@@ -15,7 +15,7 @@ INSERT INTO t_p48458750_bankruptcy_steps_vis.site_settings (key, value) VALUES
 -- Header
 ('header_firm_name', 'АБ «Правовой статус»'),
 ('header_firm_subtitle', 'Адвокатское бюро'),
-('header_phone', '+7 (800) 123-45-67'),
+('header_phone', '+7 (995)265-25-35'),
 -- Advantages section
 ('adv_section_title', 'Почему АБ «Правовой статус»'),
 ('adv_section_subtitle', 'Мы специализируемся исключительно на защите интересов граждан в делах о несостоятельности'),
