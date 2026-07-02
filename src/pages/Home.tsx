@@ -90,13 +90,11 @@ const Home = () => {
       <header className="relative z-10 border-b border-slate-200 bg-white/80 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-blue-800 flex items-center justify-center">
-              <Icon name="Scale" size={18} className="text-white" />
-            </div>
-            <div>
-              <div className="font-heading font-bold text-slate-900 text-sm leading-none">АБ «Правовой статус»</div>
-              <div className="text-xs text-slate-500 leading-none mt-0.5">Адвокатское бюро</div>
-            </div>
+            <img
+              src="https://cdn.poehali.dev/projects/3e7e35fe-ef29-4a30-b52d-2ba872294646/bucket/cf56bfce-81fa-4842-abc6-423b7363932b.jpg"
+              alt="АБ Правовой статус"
+              className="h-10 w-auto object-contain"
+            />
           </div>
           <a
             href="tel:+78001234567"
@@ -400,8 +398,11 @@ const Home = () => {
                   </div>
                 </div>
                 <div className="mt-10 pt-8 border-t border-white/10">
-                  <div className="text-xs text-blue-400 mb-1">Адвокатское бюро</div>
-                  <div className="font-heading font-bold text-white">«Правовой статус»</div>
+                  <img
+                    src="https://cdn.poehali.dev/projects/3e7e35fe-ef29-4a30-b52d-2ba872294646/bucket/cf56bfce-81fa-4842-abc6-423b7363932b.jpg"
+                    alt="АБ Правовой статус"
+                    className="h-14 w-auto object-contain brightness-0 invert"
+                  />
                 </div>
               </div>
 
@@ -502,10 +503,11 @@ const Home = () => {
       <footer className="relative z-10 border-t border-slate-200 bg-white">
         <div className="max-w-6xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="w-7 h-7 rounded-md bg-blue-800 flex items-center justify-center">
-              <Icon name="Scale" size={14} className="text-white" />
-            </div>
-            <span className="text-sm text-slate-600 font-medium">Адвокатское бюро «Правовой статус»</span>
+            <img
+              src="https://cdn.poehali.dev/projects/3e7e35fe-ef29-4a30-b52d-2ba872294646/bucket/cf56bfce-81fa-4842-abc6-423b7363932b.jpg"
+              alt="АБ Правовой статус"
+              className="h-8 w-auto object-contain"
+            />
           </div>
           <span className="text-xs text-slate-400">Юридическая помощь в делах о банкротстве физических лиц</span>
         </div>
