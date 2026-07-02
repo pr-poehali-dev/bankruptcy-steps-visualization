@@ -111,11 +111,20 @@ const DynamicPage = () => {
               <div className="text-xs text-slate-400 leading-none mt-0.5">Адвокатское бюро</div>
             </div>
           </button>
-          <nav className="flex items-center gap-2 text-sm text-slate-500">
-            <button onClick={() => navigate('/')} className="hover:text-[#1B3F7C] transition-colors">Главная</button>
-            <Icon name="ChevronRight" size={14} className="text-slate-300" />
-            <span className="text-slate-900 font-medium truncate max-w-[160px]">{page!.title}</span>
-          </nav>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => navigate('/')}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1B3F7C] text-white text-sm font-semibold hover:bg-[#163270] transition-colors"
+            >
+              <Icon name="Home" size={14} />
+              На главную
+            </button>
+            <nav className="hidden sm:flex items-center gap-2 text-sm text-slate-400">
+              <span>Главная</span>
+              <Icon name="ChevronRight" size={13} className="text-slate-300" />
+              <span className="text-slate-700 font-medium truncate max-w-[160px]">{page!.title}</span>
+            </nav>
+          </div>
         </div>
       </header>
 

@@ -22,10 +22,10 @@ const Consequences = () => {
       <nav className="relative z-10 max-w-6xl mx-auto px-6 pt-8 flex items-center gap-3">
         <button
           onClick={() => navigate('/')}
-          className="flex items-center gap-2 text-sm text-slate-500 hover:text-blue-700 transition-colors"
+          className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 text-sm font-semibold hover:bg-[#1B3F7C] hover:text-white hover:border-[#1B3F7C] transition-all shadow-sm"
         >
-          <Icon name="ChevronLeft" size={16} />
-          Главная
+          <Icon name="Home" size={14} />
+          На главную
         </button>
         <span className="text-slate-300">/</span>
         <span className="text-sm text-slate-700 font-medium">Последствия банкротства</span>
