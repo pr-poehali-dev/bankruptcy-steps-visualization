@@ -25,11 +25,41 @@ const advantages = [
 ];
 
 const steps = [
-  { num: '01', icon: 'MessageSquare', text: 'Бесплатная консультация и анализ ситуации' },
-  { num: '02', icon: 'FolderOpen', text: 'Сбор документов и подготовка заявления' },
-  { num: '03', icon: 'Landmark', text: 'Подача в арбитражный суд' },
-  { num: '04', icon: 'UserCheck', text: 'Сопровождение всей процедуры' },
-  { num: '05', icon: 'CircleCheckBig', text: 'Списание долгов и закрытие дела' },
+  {
+    num: '01',
+    icon: 'MessageSquare',
+    title: 'Консультация',
+    text: 'Бесплатно разберём вашу ситуацию, оценим шансы и объясним, подходит ли вам банкротство',
+    tag: 'Бесплатно',
+  },
+  {
+    num: '02',
+    icon: 'FolderOpen',
+    title: 'Документы',
+    text: 'Поможем собрать полный пакет документов и подготовим заявление в арбитражный суд',
+    tag: '1–2 недели',
+  },
+  {
+    num: '03',
+    icon: 'Landmark',
+    title: 'Суд',
+    text: 'Подаём заявление и представляем ваши интересы на всех заседаниях арбитражного суда',
+    tag: '1–3 месяца',
+  },
+  {
+    num: '04',
+    icon: 'UserCheck',
+    title: 'Процедура',
+    text: 'Контролируем работу финансового управляющего и защищаем ваше имущество',
+    tag: 'до 12 мес',
+  },
+  {
+    num: '05',
+    icon: 'CircleCheckBig',
+    title: 'Результат',
+    text: 'Суд выносит определение о списании долгов. Вы свободны от обязательств',
+    tag: 'Долги списаны',
+  },
 ];
 
 const Home = () => {
@@ -159,30 +189,54 @@ const Home = () => {
 
         {/* How we work */}
         <section className="pb-20">
-          <div className="text-center mb-10 animate-fade-in" style={{ animationDelay: '0.3s', opacity: 0 }}>
-            <h2 className="font-heading font-extrabold text-3xl md:text-4xl text-slate-900 mb-3">Как мы работаем</h2>
-            <p className="text-slate-500">От первого звонка до закрытия дела</p>
-          </div>
-          <div className="grid sm:grid-cols-3 lg:grid-cols-5 gap-4">
-            {steps.map((s, i) => (
-              <div
-                key={i}
-                className="relative bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-blue-200 transition-all animate-fade-in flex flex-col items-center text-center"
-                style={{ animationDelay: `${0.32 + i * 0.07}s`, opacity: 0 }}
-              >
-                {/* Connector line (desktop) */}
-                {i < steps.length - 1 && (
-                  <div className="hidden lg:block absolute top-[42px] left-[calc(100%+1px)] w-4 h-px bg-slate-200 z-10" />
-                )}
-                <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center mb-4 relative">
-                  <Icon name={s.icon} size={22} className="text-blue-700" fallback="Circle" />
-                  <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-blue-800 text-white font-heading font-bold text-[10px] flex items-center justify-center">
-                    {s.num.replace('0', '')}
-                  </span>
-                </div>
-                <p className="text-sm text-slate-700 font-medium leading-snug">{s.text}</p>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10 animate-fade-in" style={{ animationDelay: '0.3s', opacity: 0 }}>
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 mb-4">
+                <Icon name="Route" size={13} className="text-blue-700" fallback="Circle" />
+                <span className="text-xs font-semibold text-blue-700">Наш процесс</span>
               </div>
-            ))}
+              <h2 className="font-heading font-extrabold text-3xl md:text-4xl text-slate-900">Как мы работаем</h2>
+            </div>
+            <p className="text-slate-500 text-sm max-w-xs md:text-right">От первого звонка до полного списания долгов под ключ</p>
+          </div>
+
+          <div className="relative">
+            {/* Vertical timeline line */}
+            <div className="hidden md:block absolute left-[28px] top-6 bottom-6 w-px bg-slate-200" />
+
+            <div className="space-y-4">
+              {steps.map((s, i) => (
+                <div
+                  key={i}
+                  className="relative flex gap-5 md:gap-8 items-start animate-fade-in"
+                  style={{ animationDelay: `${0.32 + i * 0.08}s`, opacity: 0 }}
+                >
+                  {/* Circle number */}
+                  <div className="shrink-0 w-14 h-14 rounded-2xl bg-white border-2 border-slate-200 flex flex-col items-center justify-center shadow-sm z-10 group-hover:border-blue-300 transition-colors">
+                    <Icon name={s.icon} size={20} className="text-blue-700 mb-0.5" fallback="Circle" />
+                    <span className="font-heading font-black text-[10px] text-slate-400">{s.num}</span>
+                  </div>
+
+                  {/* Card */}
+                  <div className="flex-1 bg-white border border-slate-200 rounded-2xl px-6 py-5 shadow-sm hover:shadow-md hover:border-blue-200 transition-all flex flex-col sm:flex-row sm:items-center gap-4">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-1">
+                        <h3 className="font-heading font-bold text-slate-900">{s.title}</h3>
+                        <span className="text-xs px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 font-semibold shrink-0">
+                          {s.tag}
+                        </span>
+                      </div>
+                      <p className="text-sm text-slate-500 leading-relaxed">{s.text}</p>
+                    </div>
+                    {i === steps.length - 1 && (
+                      <div className="shrink-0 w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center">
+                        <Icon name="CheckCheck" size={20} className="text-teal-600" fallback="Check" />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
