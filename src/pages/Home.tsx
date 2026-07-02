@@ -204,54 +204,60 @@ const Home = () => {
 
         {/* How we work */}
         <section className="pb-20">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10 animate-fade-in" style={{ animationDelay: '0.3s', opacity: 0 }}>
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 mb-4">
-                <Icon name="Route" size={13} className="text-blue-700" fallback="Circle" />
-                <span className="text-xs font-semibold text-blue-700">Наш процесс</span>
-              </div>
-              <h2 className="font-heading font-extrabold text-3xl md:text-4xl text-slate-900">Как мы работаем</h2>
+          <div className="text-center mb-12 animate-fade-in" style={{ animationDelay: '0.3s', opacity: 0 }}>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 mb-4">
+              <Icon name="Route" size={13} className="text-blue-700" fallback="Circle" />
+              <span className="text-xs font-semibold text-blue-700">Наш процесс</span>
             </div>
-            <p className="text-slate-500 text-sm max-w-xs md:text-right">От первого звонка до полного списания долгов под ключ</p>
+            <h2 className="font-heading font-extrabold text-3xl md:text-4xl text-slate-900">Как мы работаем</h2>
           </div>
 
-          <div className="relative">
-            {/* Vertical timeline line */}
-            <div className="hidden md:block absolute left-[28px] top-6 bottom-6 w-px bg-slate-200" />
+          {/* Desktop stepper */}
+          <div className="hidden md:block">
+            {/* Step icons row */}
+            <div className="relative flex items-start">
+              {/* Connecting line behind icons */}
+              <div className="absolute top-[28px] left-[10%] right-[10%] h-0.5 bg-slate-200 z-0" />
+              <div className="absolute top-[28px] left-[10%] h-0.5 bg-gradient-to-r from-blue-700 to-blue-300 z-0" style={{ width: '80%' }} />
 
-            <div className="space-y-4">
               {steps.map((s, i) => (
-                <div
-                  key={i}
-                  className="relative flex gap-5 md:gap-8 items-start animate-fade-in"
-                  style={{ animationDelay: `${0.32 + i * 0.08}s`, opacity: 0 }}
-                >
-                  {/* Circle number */}
-                  <div className="shrink-0 w-14 h-14 rounded-2xl bg-white border-2 border-slate-200 flex flex-col items-center justify-center shadow-sm z-10 group-hover:border-blue-300 transition-colors">
-                    <Icon name={s.icon} size={20} className="text-blue-700 mb-0.5" fallback="Circle" />
-                    <span className="font-heading font-black text-[10px] text-slate-400">{s.num}</span>
+                <div key={i} className="relative z-10 flex-1 flex flex-col items-center gap-4 animate-fade-in" style={{ animationDelay: `${0.35 + i * 0.08}s`, opacity: 0 }}>
+                  {/* Icon bubble */}
+                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-md border-4 border-white ${i === steps.length - 1 ? 'bg-teal-700' : 'bg-blue-800'}`}>
+                    <Icon name={s.icon} size={22} className="text-white" fallback="Circle" />
                   </div>
 
-                  {/* Card */}
-                  <div className="flex-1 bg-white border border-slate-200 rounded-2xl px-6 py-5 shadow-sm hover:shadow-md hover:border-blue-200 transition-all flex flex-col sm:flex-row sm:items-center gap-4">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-1">
-                        <h3 className="font-heading font-bold text-slate-900">{s.title}</h3>
-                        <span className="text-xs px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 font-semibold shrink-0">
-                          {s.tag}
-                        </span>
-                      </div>
-                      <p className="text-sm text-slate-500 leading-relaxed">{s.text}</p>
-                    </div>
-                    {i === steps.length - 1 && (
-                      <div className="shrink-0 w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center">
-                        <Icon name="CheckCheck" size={20} className="text-teal-600" fallback="Check" />
-                      </div>
-                    )}
+                  {/* Step info */}
+                  <div className="text-center px-2">
+                    <div className="font-heading font-black text-xs text-slate-400 mb-1">{s.num}</div>
+                    <div className="font-heading font-bold text-slate-900 text-sm leading-tight mb-1">{s.title}</div>
+                    <div className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mb-2 ${i === steps.length - 1 ? 'bg-teal-50 text-teal-700' : 'bg-blue-50 text-blue-700'}`}>{s.tag}</div>
+                    <p className="text-xs text-slate-500 leading-relaxed">{s.text}</p>
                   </div>
                 </div>
               ))}
             </div>
+          </div>
+
+          {/* Mobile: vertical */}
+          <div className="md:hidden space-y-0">
+            {steps.map((s, i) => (
+              <div key={i} className="flex gap-4 animate-fade-in" style={{ animationDelay: `${0.35 + i * 0.08}s`, opacity: 0 }}>
+                <div className="flex flex-col items-center">
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-sm shrink-0 ${i === steps.length - 1 ? 'bg-teal-700' : 'bg-blue-800'}`}>
+                    <Icon name={s.icon} size={20} className="text-white" fallback="Circle" />
+                  </div>
+                  {i < steps.length - 1 && <div className="w-0.5 flex-1 bg-slate-200 my-1" />}
+                </div>
+                <div className="pb-6 pt-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="font-heading font-bold text-slate-900">{s.title}</span>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${i === steps.length - 1 ? 'bg-teal-50 text-teal-700' : 'bg-blue-50 text-blue-700'}`}>{s.tag}</span>
+                  </div>
+                  <p className="text-sm text-slate-500 leading-relaxed">{s.text}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </section>
 
