@@ -25,11 +25,11 @@ const advantages = [
 ];
 
 const steps = [
-  { num: '01', text: 'Бесплатная консультация и анализ ситуации' },
-  { num: '02', text: 'Сбор документов и подготовка заявления' },
-  { num: '03', text: 'Подача в арбитражный суд' },
-  { num: '04', text: 'Сопровождение всей процедуры' },
-  { num: '05', text: 'Списание долгов и закрытие дела' },
+  { num: '01', icon: 'MessageSquare', text: 'Бесплатная консультация и анализ ситуации' },
+  { num: '02', icon: 'FolderOpen', text: 'Сбор документов и подготовка заявления' },
+  { num: '03', icon: 'Landmark', text: 'Подача в арбитражный суд' },
+  { num: '04', icon: 'UserCheck', text: 'Сопровождение всей процедуры' },
+  { num: '05', icon: 'CircleCheckBig', text: 'Списание долгов и закрытие дела' },
 ];
 
 const Home = () => {
@@ -159,22 +159,30 @@ const Home = () => {
 
         {/* How we work */}
         <section className="pb-20">
-          <div className="bg-blue-900 rounded-3xl p-8 md:p-12 animate-fade-in" style={{ animationDelay: '0.3s', opacity: 0 }}>
-            <div className="max-w-3xl mx-auto">
-              <div className="text-center mb-10">
-                <h2 className="font-heading font-extrabold text-3xl text-white mb-3">Как мы работаем</h2>
-                <p className="text-blue-200 text-sm">От первого звонка до закрытия дела</p>
+          <div className="text-center mb-10 animate-fade-in" style={{ animationDelay: '0.3s', opacity: 0 }}>
+            <h2 className="font-heading font-extrabold text-3xl md:text-4xl text-slate-900 mb-3">Как мы работаем</h2>
+            <p className="text-slate-500">От первого звонка до закрытия дела</p>
+          </div>
+          <div className="grid sm:grid-cols-3 lg:grid-cols-5 gap-4">
+            {steps.map((s, i) => (
+              <div
+                key={i}
+                className="relative bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-blue-200 transition-all animate-fade-in flex flex-col items-center text-center"
+                style={{ animationDelay: `${0.32 + i * 0.07}s`, opacity: 0 }}
+              >
+                {/* Connector line (desktop) */}
+                {i < steps.length - 1 && (
+                  <div className="hidden lg:block absolute top-[42px] left-[calc(100%+1px)] w-4 h-px bg-slate-200 z-10" />
+                )}
+                <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center mb-4 relative">
+                  <Icon name={s.icon} size={22} className="text-blue-700" fallback="Circle" />
+                  <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-blue-800 text-white font-heading font-bold text-[10px] flex items-center justify-center">
+                    {s.num.replace('0', '')}
+                  </span>
+                </div>
+                <p className="text-sm text-slate-700 font-medium leading-snug">{s.text}</p>
               </div>
-              <div className="space-y-4">
-                {steps.map((s, i) => (
-                  <div key={i} className="flex items-center gap-4">
-                    <span className="font-heading font-black text-3xl text-blue-700 w-12 shrink-0">{s.num}</span>
-                    <div className="flex-1 h-px bg-blue-800" />
-                    <span className="text-white text-sm font-medium text-right max-w-[260px]">{s.text}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+            ))}
           </div>
         </section>
 
