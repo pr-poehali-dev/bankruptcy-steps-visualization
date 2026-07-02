@@ -1,6 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
+import AdminStats from '@/components/admin/AdminStats';
+import AdminLeads from '@/components/admin/AdminLeads';
+import { ContentTab, FormsTab, SeoTab } from '@/components/admin/AdminSettings';
 
 const ADMIN_URL = 'https://functions.poehali.dev/f93de05a-95a2-4dbb-bfdd-35104dcbefc5';
 
@@ -26,19 +29,6 @@ interface Stats {
 interface Settings {
   [key: string]: string;
 }
-
-const PAGE_LABELS: Record<string, string> = {
-  '/': 'Главная',
-  '/stages': 'Этапы процедуры',
-  '/consequences': 'Последствия',
-  '/payments': 'Платежи',
-};
-
-const STATUS_LABELS: Record<string, { label: string; color: string; bg: string }> = {
-  new: { label: 'Новая', color: 'text-blue-700', bg: 'bg-blue-50' },
-  in_progress: { label: 'В работе', color: 'text-amber-700', bg: 'bg-amber-50' },
-  done: { label: 'Завершена', color: 'text-green-700', bg: 'bg-green-50' },
-};
 
 const AdminPanel = () => {
   const navigate = useNavigate();
@@ -89,6 +79,10 @@ const AdminPanel = () => {
     setLeads(prev => prev.map(l => l.id === id ? { ...l, status } : l));
   };
 
+  const handleSettingChange = (key: string, value: string) => {
+    setSettings(s => ({ ...s, [key]: value }));
+  };
+
   const tabs: { id: Tab; label: string; icon: string }[] = [
     { id: 'stats', label: 'Статистика', icon: 'BarChart3' },
     { id: 'leads', label: 'Заявки', icon: 'Inbox' },
@@ -99,7 +93,6 @@ const AdminPanel = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 font-body">
-      {/* Header */}
       <header className="bg-[#1B3F7C] text-white">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -125,7 +118,6 @@ const AdminPanel = () => {
           </div>
         </div>
 
-        {/* Tabs */}
         <div className="max-w-7xl mx-auto px-6 flex gap-1 pb-0">
           {tabs.map(t => (
             <button
@@ -148,385 +140,38 @@ const AdminPanel = () => {
       </header>
 
       <main className="max-w-7xl mx-auto px-6 py-8">
-
-        {/* STATS */}
-        {tab === 'stats' && (
-          <div className="space-y-6">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {[
-                { icon: 'Eye', label: 'Просмотров всего', value: stats?.total_views ?? '—', color: 'text-blue-700' },
-                { icon: 'Inbox', label: 'Всего заявок', value: stats?.total_leads ?? '—', color: 'text-slate-700' },
-                { icon: 'BellRing', label: 'Новых заявок', value: stats?.new_leads ?? '—', color: 'text-red-600' },
-                { icon: 'TrendingUp', label: 'Страниц в топе', value: stats?.pages?.length ?? '—', color: 'text-green-700' },
-              ].map((s, i) => (
-                <div key={i} className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
-                  <Icon name={s.icon} size={20} className={`${s.color} mb-3`} fallback="Star" />
-                  <div className={`font-heading font-black text-3xl ${s.color}`}>{s.value}</div>
-                  <div className="text-xs text-slate-500 mt-1">{s.label}</div>
-                </div>
-              ))}
-            </div>
-
-            {/* Daily chart (simple bars) */}
-            {stats?.daily && stats.daily.length > 0 && (
-              <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-                <h3 className="font-heading font-bold text-slate-900 mb-5">Просмотры за 14 дней</h3>
-                <div className="flex items-end gap-2 h-32">
-                  {stats.daily.map((d, i) => {
-                    const max = Math.max(...stats.daily.map(x => Number(x.views)));
-                    const h = max > 0 ? (Number(d.views) / max) * 100 : 0;
-                    return (
-                      <div key={i} className="flex-1 flex flex-col items-center gap-1">
-                        <span className="text-[10px] text-slate-400">{d.views}</span>
-                        <div className="w-full rounded-t-md bg-[#1B3F7C]/80 transition-all" style={{ height: `${Math.max(h, 4)}%` }} />
-                        <span className="text-[9px] text-slate-400">{String(d.day).slice(5)}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-
-            {/* Top pages */}
-            {stats?.pages && stats.pages.length > 0 && (
-              <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-                <h3 className="font-heading font-bold text-slate-900 mb-4">Популярные страницы</h3>
-                <div className="space-y-3">
-                  {stats.pages.map((p, i) => {
-                    const max = Math.max(...stats.pages.map(x => Number(x.views)));
-                    const w = max > 0 ? (Number(p.views) / max) * 100 : 0;
-                    return (
-                      <div key={i}>
-                        <div className="flex justify-between text-sm mb-1">
-                          <span className="text-slate-700">{PAGE_LABELS[p.path] || p.path}</span>
-                          <span className="text-slate-500 font-medium">{p.views} просм.</span>
-                        </div>
-                        <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
-                          <div className="h-full bg-[#1B3F7C] rounded-full" style={{ width: `${w}%` }} />
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* LEADS */}
-        {tab === 'leads' && (
-          <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
-            <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
-              <h3 className="font-heading font-bold text-slate-900">Заявки на консультацию</h3>
-              <span className="text-sm text-slate-500">{leads.length} заявок</span>
-            </div>
-            {leads.length === 0 ? (
-              <div className="px-6 py-16 text-center text-slate-400">
-                <Icon name="Inbox" size={32} className="mx-auto mb-3 opacity-40" />
-                <p>Заявок пока нет</p>
-              </div>
-            ) : (
-              <div className="divide-y divide-slate-100">
-                {leads.map(lead => {
-                  const s = STATUS_LABELS[lead.status] || STATUS_LABELS.new;
-                  return (
-                    <div key={lead.id} className="px-6 py-4 flex flex-col sm:flex-row sm:items-center gap-4">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="font-semibold text-slate-900">{lead.name || 'Без имени'}</span>
-                          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${s.bg} ${s.color}`}>{s.label}</span>
-                        </div>
-                        <div className="flex flex-wrap gap-4 text-sm text-slate-500">
-                          <span className="flex items-center gap-1"><Icon name="Phone" size={13} />{lead.phone}</span>
-                          <span className="flex items-center gap-1"><Icon name="Clock" size={13} />{new Date(lead.created_at).toLocaleString('ru')}</span>
-                        </div>
-                        {lead.message && <p className="text-sm text-slate-600 mt-1 italic">«{lead.message}»</p>}
-                      </div>
-                      <select
-                        value={lead.status}
-                        onChange={e => handleLeadStatus(lead.id, e.target.value)}
-                        className="text-sm border border-slate-200 rounded-xl px-3 py-2 text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-[#1B3F7C]"
-                      >
-                        <option value="new">Новая</option>
-                        <option value="in_progress">В работе</option>
-                        <option value="done">Завершена</option>
-                      </select>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* CONTENT */}
+        {tab === 'stats' && <AdminStats stats={stats} />}
+        {tab === 'leads' && <AdminLeads leads={leads} onStatusChange={handleLeadStatus} />}
         {tab === 'content' && (
-          <div className="space-y-5">
-            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-              <h3 className="font-heading font-bold text-slate-900 mb-5">Главный экран (Hero)</h3>
-              <div className="space-y-4">
-                {[
-                  { key: 'hero_title', label: 'Заголовок', multiline: false },
-                  { key: 'hero_subtitle', label: 'Подзаголовок', multiline: true },
-                ].map(f => (
-                  <div key={f.key}>
-                    <label className="block text-xs font-semibold text-slate-600 mb-1.5 uppercase tracking-wide">{f.label}</label>
-                    {f.multiline ? (
-                      <textarea rows={3} value={settings[f.key] || ''} onChange={e => setSettings(s => ({ ...s, [f.key]: e.target.value }))}
-                        className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#1B3F7C] resize-none" />
-                    ) : (
-                      <input type="text" value={settings[f.key] || ''} onChange={e => setSettings(s => ({ ...s, [f.key]: e.target.value }))}
-                        className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#1B3F7C]" />
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-              <h3 className="font-heading font-bold text-slate-900 mb-5">Контакты</h3>
-              <div className="grid sm:grid-cols-2 gap-4">
-                {[
-                  { key: 'phone', label: 'Телефон' },
-                  { key: 'email', label: 'Email' },
-                  { key: 'address', label: 'Адрес' },
-                ].map(f => (
-                  <div key={f.key} className={f.key === 'address' ? 'sm:col-span-2' : ''}>
-                    <label className="block text-xs font-semibold text-slate-600 mb-1.5 uppercase tracking-wide">{f.label}</label>
-                    <input type="text" value={settings[f.key] || ''} onChange={e => setSettings(s => ({ ...s, [f.key]: e.target.value }))}
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#1B3F7C]" />
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-              <h3 className="font-heading font-bold text-slate-900 mb-5">Форма заявки</h3>
-              <div className="space-y-4">
-                {[
-                  { key: 'form_title', label: 'Заголовок формы' },
-                  { key: 'form_subtitle', label: 'Подзаголовок формы' },
-                ].map(f => (
-                  <div key={f.key}>
-                    <label className="block text-xs font-semibold text-slate-600 mb-1.5 uppercase tracking-wide">{f.label}</label>
-                    <input type="text" value={settings[f.key] || ''} onChange={e => setSettings(s => ({ ...s, [f.key]: e.target.value }))}
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#1B3F7C]" />
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <SaveBar loading={loading} saveMsg={saveMsg} onSave={handleSaveSettings} />
-          </div>
+          <ContentTab
+            settings={settings}
+            onChange={handleSettingChange}
+            loading={loading}
+            saveMsg={saveMsg}
+            onSave={handleSaveSettings}
+          />
         )}
-
-        {/* FORMS & BUTTONS */}
         {tab === 'forms' && (
-          <div className="space-y-5">
-
-            {/* Кнопки сайта */}
-            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-              <div className="flex items-center gap-3 mb-5">
-                <div className="w-9 h-9 rounded-xl bg-[#1B3F7C]/10 flex items-center justify-center">
-                  <Icon name="MousePointerClick" size={18} className="text-[#1B3F7C]" fallback="Circle" />
-                </div>
-                <h3 className="font-heading font-bold text-slate-900">Кнопки сайта</h3>
-              </div>
-              <div className="space-y-4">
-                {[
-                  { key: 'btn_header_cta', label: 'Кнопка в шапке', hint: 'Кнопка «Консультация» в правом верхнем углу' },
-                  { key: 'btn_hero_primary', label: 'Главная кнопка Hero', hint: 'Основная кнопка на главном экране' },
-                  { key: 'btn_hero_secondary', label: 'Вторая кнопка Hero', hint: 'Кнопка рядом с главной (прозрачная)' },
-                  { key: 'btn_form_submit', label: 'Кнопка отправки формы', hint: 'Текст кнопки в форме заявки' },
-                ].map(f => (
-                  <div key={f.key}>
-                    <label className="block text-xs font-semibold text-slate-600 mb-1 uppercase tracking-wide">{f.label}</label>
-                    <p className="text-xs text-slate-400 mb-1.5">{f.hint}</p>
-                    <div className="flex items-center gap-3">
-                      <input
-                        type="text"
-                        value={settings[f.key] || ''}
-                        onChange={e => setSettings(s => ({ ...s, [f.key]: e.target.value }))}
-                        className="flex-1 px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#1B3F7C]"
-                      />
-                      <div className="shrink-0 px-4 py-2.5 rounded-xl bg-[#1B3F7C] text-white text-sm font-semibold whitespace-nowrap">
-                        {settings[f.key] || '...'}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Поля формы */}
-            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-              <div className="flex items-center gap-3 mb-5">
-                <div className="w-9 h-9 rounded-xl bg-[#1B3F7C]/10 flex items-center justify-center">
-                  <Icon name="FormInput" size={18} className="text-[#1B3F7C]" fallback="Circle" />
-                </div>
-                <h3 className="font-heading font-bold text-slate-900">Поля формы заявки</h3>
-              </div>
-              <div className="space-y-4">
-                {[
-                  { key: 'form_field_name_placeholder', label: 'Плейсхолдер поля «Имя»' },
-                  { key: 'form_field_phone_placeholder', label: 'Плейсхолдер поля «Телефон»' },
-                  { key: 'form_field_message_label', label: 'Подпись поля «Сообщение»' },
-                  { key: 'form_field_message_placeholder', label: 'Плейсхолдер поля «Сообщение»' },
-                ].map(f => (
-                  <div key={f.key}>
-                    <label className="block text-xs font-semibold text-slate-600 mb-1.5 uppercase tracking-wide">{f.label}</label>
-                    <input
-                      type="text"
-                      value={settings[f.key] || ''}
-                      onChange={e => setSettings(s => ({ ...s, [f.key]: e.target.value }))}
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#1B3F7C]"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Гарантии в форме */}
-            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-              <div className="flex items-center gap-3 mb-5">
-                <div className="w-9 h-9 rounded-xl bg-[#1B3F7C]/10 flex items-center justify-center">
-                  <Icon name="ShieldCheck" size={18} className="text-[#1B3F7C]" fallback="Circle" />
-                </div>
-                <h3 className="font-heading font-bold text-slate-900">Гарантии (левая панель формы)</h3>
-              </div>
-              <div className="space-y-4">
-                {[
-                  { key: 'form_guarantee_1', label: 'Гарантия 1' },
-                  { key: 'form_guarantee_2', label: 'Гарантия 2' },
-                  { key: 'form_guarantee_3', label: 'Гарантия 3' },
-                ].map(f => (
-                  <div key={f.key} className="flex items-center gap-3">
-                    <div className="w-7 h-7 rounded-lg bg-white/10 border border-slate-200 flex items-center justify-center shrink-0">
-                      <Icon name="Check" size={13} className="text-[#1B3F7C]" />
-                    </div>
-                    <input
-                      type="text"
-                      value={settings[f.key] || ''}
-                      onChange={e => setSettings(s => ({ ...s, [f.key]: e.target.value }))}
-                      className="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#1B3F7C]"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Сообщение после отправки */}
-            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-              <div className="flex items-center gap-3 mb-5">
-                <div className="w-9 h-9 rounded-xl bg-green-50 flex items-center justify-center">
-                  <Icon name="CheckCircle" size={18} className="text-green-600" fallback="Circle" />
-                </div>
-                <h3 className="font-heading font-bold text-slate-900">Сообщение после отправки</h3>
-              </div>
-              <div className="space-y-4">
-                {[
-                  { key: 'form_success_title', label: 'Заголовок', multiline: false },
-                  { key: 'form_success_text', label: 'Текст', multiline: true },
-                  { key: 'form_privacy_text', label: 'Текст о персональных данных', multiline: false },
-                ].map(f => (
-                  <div key={f.key}>
-                    <label className="block text-xs font-semibold text-slate-600 mb-1.5 uppercase tracking-wide">{f.label}</label>
-                    {f.multiline ? (
-                      <textarea
-                        rows={2}
-                        value={settings[f.key] || ''}
-                        onChange={e => setSettings(s => ({ ...s, [f.key]: e.target.value }))}
-                        className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#1B3F7C] resize-none"
-                      />
-                    ) : (
-                      <input
-                        type="text"
-                        value={settings[f.key] || ''}
-                        onChange={e => setSettings(s => ({ ...s, [f.key]: e.target.value }))}
-                        className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#1B3F7C]"
-                      />
-                    )}
-                  </div>
-                ))}
-              </div>
-
-              {/* Preview */}
-              <div className="mt-5 border border-slate-200 rounded-xl p-5 bg-slate-50 text-center">
-                <div className="w-12 h-12 rounded-xl bg-teal-50 flex items-center justify-center mx-auto mb-3">
-                  <Icon name="CheckCheck" size={22} className="text-teal-600" fallback="Check" />
-                </div>
-                <div className="font-heading font-bold text-slate-900 mb-1">{settings['form_success_title'] || '—'}</div>
-                <div className="text-xs text-slate-500 leading-relaxed">{settings['form_success_text'] || '—'}</div>
-              </div>
-            </div>
-
-            <SaveBar loading={loading} saveMsg={saveMsg} onSave={handleSaveSettings} />
-          </div>
+          <FormsTab
+            settings={settings}
+            onChange={handleSettingChange}
+            loading={loading}
+            saveMsg={saveMsg}
+            onSave={handleSaveSettings}
+          />
         )}
-
-        {/* SEO */}
         {tab === 'seo' && (
-          <div className="space-y-5">
-            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-              <h3 className="font-heading font-bold text-slate-900 mb-5">SEO-настройки</h3>
-              <div className="space-y-4">
-                {[
-                  { key: 'seo_title', label: 'Title страницы', hint: 'Рекомендуется 50–60 символов' },
-                  { key: 'seo_description', label: 'Meta Description', hint: 'Рекомендуется 150–160 символов', multiline: true },
-                  { key: 'seo_keywords', label: 'Keywords (через запятую)', hint: 'Ключевые слова для поисковиков' },
-                ].map(f => (
-                  <div key={f.key}>
-                    <label className="block text-xs font-semibold text-slate-600 mb-1 uppercase tracking-wide">{f.label}</label>
-                    <p className="text-xs text-slate-400 mb-1.5">{f.hint}</p>
-                    {f.multiline ? (
-                      <textarea rows={3} value={settings[f.key] || ''} onChange={e => setSettings(s => ({ ...s, [f.key]: e.target.value }))}
-                        className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#1B3F7C] resize-none" />
-                    ) : (
-                      <input type="text" value={settings[f.key] || ''} onChange={e => setSettings(s => ({ ...s, [f.key]: e.target.value }))}
-                        className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#1B3F7C]" />
-                    )}
-                    <div className="text-right text-xs text-slate-400 mt-1">{(settings[f.key] || '').length} симв.</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Preview */}
-            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-              <h3 className="font-heading font-bold text-slate-900 mb-4">Предпросмотр в Google</h3>
-              <div className="border border-slate-200 rounded-xl p-4 bg-slate-50">
-                <div className="text-blue-700 text-base font-medium truncate">{settings.seo_title || 'Заголовок страницы'}</div>
-                <div className="text-green-700 text-xs mt-0.5">https://ваш-сайт.ru</div>
-                <div className="text-slate-600 text-sm mt-1 line-clamp-2">{settings.seo_description || 'Описание страницы появится здесь...'}</div>
-              </div>
-            </div>
-
-            <SaveBar loading={loading} saveMsg={saveMsg} onSave={handleSaveSettings} />
-          </div>
+          <SeoTab
+            settings={settings}
+            onChange={handleSettingChange}
+            loading={loading}
+            saveMsg={saveMsg}
+            onSave={handleSaveSettings}
+          />
         )}
-
       </main>
     </div>
   );
 };
-
-const SaveBar = ({ loading, saveMsg, onSave }: { loading: boolean; saveMsg: string; onSave: () => void }) => (
-  <div className="flex items-center justify-between bg-white border border-slate-200 rounded-2xl px-6 py-4 shadow-sm">
-    {saveMsg ? (
-      <span className="flex items-center gap-2 text-green-600 text-sm font-medium">
-        <Icon name="CheckCircle" size={16} />
-        {saveMsg}
-      </span>
-    ) : <span className="text-xs text-slate-400">Изменения не сохранены</span>}
-    <button
-      onClick={onSave}
-      disabled={loading}
-      className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#1B3F7C] text-white font-semibold text-sm hover:bg-[#163270] transition-colors disabled:opacity-60"
-    >
-      {loading ? <Icon name="Loader" size={15} className="animate-spin" /> : <Icon name="Save" size={15} />}
-      Сохранить
-    </button>
-  </div>
-);
 
 export default AdminPanel;
