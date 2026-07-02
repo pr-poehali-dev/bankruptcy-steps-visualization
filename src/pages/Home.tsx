@@ -265,26 +265,32 @@ const Home = () => {
             <p className="text-slate-500">Интерактивные разделы с детальными схемами процедуры</p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             {[
               {
                 path: '/stages', icon: 'ListOrdered', delay: '0.4s',
+                color: '#1B3F7C', bg: 'bg-blue-50',
                 title: 'Этапы процедуры',
                 desc: 'Пять ключевых шагов — от подачи заявления в суд до полного списания долгов.',
+                stats: [{ icon: 'Clock', text: '5 этапов' }, { icon: 'Timer', text: '6–12 месяцев' }],
                 tags: ['Подача заявления', 'Суд', 'Реструктуризация', 'Реализация', 'Списание'],
                 link: 'Перейти к этапам',
               },
               {
                 path: '/consequences', icon: 'AlertTriangle', delay: '0.48s',
+                color: '#92400E', bg: 'bg-amber-50',
                 title: 'Последствия банкротства',
                 desc: 'Ограничения по срокам, что сохраняется, какие долги не списываются.',
+                stats: [{ icon: 'Ban', text: '5 ограничений' }, { icon: 'ShieldCheck', text: 'Жильё сохраняется' }],
                 tags: ['Ограничения', 'Кредиты', 'Руководство', 'Что сохранится', 'Сроки'],
                 link: 'Перейти к последствиям',
               },
               {
                 path: '/payments', icon: 'Receipt', delay: '0.56s',
+                color: '#065F46', bg: 'bg-emerald-50',
                 title: 'Обязательные платежи',
                 desc: 'Госпошлина, вознаграждение управляющего, публикации и доп. расходы.',
+                stats: [{ icon: 'Landmark', text: 'от 300 ₽' }, { icon: 'Building2', text: 'МФЦ — бесплатно' }],
                 tags: ['Госпошлина', 'Управляющий', 'Публикации', 'МФЦ бесплатно'],
                 link: 'Посмотреть платежи',
               },
@@ -292,24 +298,46 @@ const Home = () => {
               <button
                 key={card.path}
                 onClick={() => navigate(card.path)}
-                className="group bg-white border border-slate-100 rounded-2xl p-7 hover:border-slate-300 hover:shadow-lg transition-all duration-300 text-left animate-fade-in"
+                className="group bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-left animate-fade-in flex flex-col"
                 style={{ animationDelay: card.delay, opacity: 0 }}
               >
-                <div className="w-12 h-12 rounded-xl bg-[#0A1628] flex items-center justify-center mb-5 group-hover:-translate-y-0.5 transition-transform duration-300">
-                  <Icon name={card.icon} size={22} className="text-blue-400" fallback="List" />
-                </div>
-                <h3 className="font-heading font-bold text-xl text-slate-900 mb-2">{card.title}</h3>
-                <p className="text-slate-500 text-sm leading-relaxed mb-5">{card.desc}</p>
-                <div className="flex flex-wrap gap-1.5 mb-6">
-                  {card.tags.map((t) => (
-                    <span key={t} className="text-xs px-2.5 py-1 rounded-full bg-slate-100 text-slate-500 font-medium">
-                      {t}
-                    </span>
-                  ))}
-                </div>
-                <div className="flex items-center gap-2 text-[#1B3F7C] font-semibold text-sm group-hover:gap-3 transition-all">
-                  {card.link}
-                  <Icon name="ArrowRight" size={15} />
+                {/* Top accent bar */}
+                <div className="h-1.5 w-full" style={{ backgroundColor: card.color }} />
+
+                <div className="p-7 flex flex-col flex-1">
+                  {/* Icon + title row */}
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className={`w-12 h-12 rounded-xl ${card.bg} flex items-center justify-center shrink-0`}>
+                      <Icon name={card.icon} size={22} style={{ color: card.color }} fallback="List" />
+                    </div>
+                    <h3 className="font-heading font-bold text-lg text-slate-900 leading-tight">{card.title}</h3>
+                  </div>
+
+                  <p className="text-slate-500 text-sm leading-relaxed mb-5">{card.desc}</p>
+
+                  {/* Stats row */}
+                  <div className="flex gap-4 mb-5">
+                    {card.stats.map((s) => (
+                      <div key={s.text} className="flex items-center gap-1.5">
+                        <Icon name={s.icon} size={13} className="text-slate-400 shrink-0" fallback="Circle" />
+                        <span className="text-xs text-slate-500 font-medium">{s.text}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="flex flex-wrap gap-1.5 mb-6">
+                    {card.tags.map((t) => (
+                      <span key={t} className="text-xs px-2.5 py-1 rounded-full border font-medium"
+                        style={{ borderColor: `${card.color}30`, color: card.color, backgroundColor: `${card.color}08` }}>
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="mt-auto flex items-center gap-2 font-semibold text-sm group-hover:gap-3 transition-all" style={{ color: card.color }}>
+                    {card.link}
+                    <Icon name="ArrowRight" size={15} />
+                  </div>
                 </div>
               </button>
             ))}
