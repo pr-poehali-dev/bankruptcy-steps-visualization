@@ -124,7 +124,7 @@ const Index = () => {
         <header className="relative z-10 max-w-6xl mx-auto px-6 pt-20 pb-10 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slate-200 shadow-sm mb-6 animate-fade-in">
             <span className="w-2 h-2 rounded-full bg-blue-700" />
-            <span className="text-sm text-slate-600">Пошаговая инструкция 2025</span>
+            <span className="text-sm text-slate-600">Пошаговая инструкция</span>
           </div>
           <h1
             className="font-heading font-extrabold text-5xl md:text-7xl leading-[1.05] mb-6 animate-fade-in text-slate-900"
