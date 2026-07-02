@@ -3,12 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
 import AdminStats from '@/components/admin/AdminStats';
 import AdminLeads from '@/components/admin/AdminLeads';
+import AdminPages from '@/components/admin/AdminPages';
 import { ContentTab, FormsTab, SeoTab, HeroTab, AdvantagesTab, StepsTab, StagesTab, ConsequencesTab } from '@/components/admin/AdminSettings';
 import { invalidateContentCache } from '@/hooks/useSiteContent';
 
 const ADMIN_URL = 'https://functions.poehali.dev/f93de05a-95a2-4dbb-bfdd-35104dcbefc5';
 
-type Tab = 'stats' | 'leads' | 'hero' | 'advantages' | 'steps' | 'stages' | 'consequences' | 'content' | 'forms' | 'seo';
+type Tab = 'stats' | 'leads' | 'pages' | 'hero' | 'advantages' | 'steps' | 'stages' | 'consequences' | 'content' | 'forms' | 'seo';
 
 interface Lead {
   id: number;
@@ -106,6 +107,7 @@ const AdminPanel = () => {
     {
       group: 'Страницы',
       items: [
+        { id: 'pages', label: 'Мои страницы', icon: 'FilePlus' },
         { id: 'stages', label: 'Этапы', icon: 'ListOrdered' },
         { id: 'consequences', label: 'Последствия', icon: 'AlertTriangle' },
       ],
@@ -175,6 +177,7 @@ const AdminPanel = () => {
       <main className="max-w-7xl mx-auto px-6 py-8">
         {tab === 'stats' && <AdminStats stats={stats} />}
         {tab === 'leads' && <AdminLeads leads={leads} onStatusChange={handleLeadStatus} />}
+        {tab === 'pages' && <AdminPages session={session} onNavigate={navigate} />}
         {tab === 'hero' && <HeroTab settings={settings} onChange={handleSettingChange} loading={loading} saveMsg={saveMsg} onSave={handleSaveSettings} />}
         {tab === 'advantages' && <AdvantagesTab settings={settings} onChange={handleSettingChange} loading={loading} saveMsg={saveMsg} onSave={handleSaveSettings} />}
         {tab === 'steps' && <StepsTab settings={settings} onChange={handleSettingChange} loading={loading} saveMsg={saveMsg} onSave={handleSaveSettings} />}

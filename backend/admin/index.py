@@ -49,6 +49,18 @@ def handler(event: dict, context) -> dict:
             return resp(200, {'ok': True, 'session': 'admin-session-valid'})
         return resp(401, {'ok': False, 'error': 'Неверный логин или пароль'})
 
+    # GET /page/:slug публично (рендер кастомной страницы)
+    if method == 'GET' and '/page/' in path:
+        slug = path.split('/page/')[-1].strip('/')
+        conn = get_conn()
+        cur = conn.cursor(cursor_factory=RealDictCursor)
+        cur.execute(f"SELECT * FROM {SCHEMA}.pages WHERE slug = %s AND published = true", (slug,))
+        page = cur.fetchone()
+        conn.close()
+        if not page:
+            return resp(404, {'error': 'Страница не найдена'})
+        return resp(200, {'page': page})
+
     # GET /settings публично (для фронтенда сайта)
     if method == 'GET' and (path.endswith('/settings') or path in ('/', '')):
         conn = get_conn()
@@ -137,6 +149,67 @@ def handler(event: dict, context) -> dict:
         conn = get_conn()
         cur = conn.cursor()
         cur.execute(f"INSERT INTO {SCHEMA}.page_views (path) VALUES (%s)", (page_path,))
+        conn.commit()
+        conn.close()
+        return resp(200, {'ok': True})
+
+    # GET /pages — список всех страниц (для админки)
+    if method == 'GET' and path.endswith('/pages'):
+        conn = get_conn()
+        cur = conn.cursor(cursor_factory=RealDictCursor)
+        cur.execute(f"SELECT id, slug, title, subtitle, published, created_at, updated_at FROM {SCHEMA}.pages ORDER BY created_at DESC")
+        pages = cur.fetchall()
+        conn.close()
+        return resp(200, {'pages': pages})
+
+    # POST /pages — создать страницу
+    if method == 'POST' and path.endswith('/pages'):
+        slug = body.get('slug', '').strip().lower()
+        title = body.get('title', '').strip()
+        if not slug or not title:
+            return resp(400, {'error': 'slug и title обязательны'})
+        slug = ''.join(c if c.isalnum() or c in '-_' else '-' for c in slug).strip('-')
+        conn = get_conn()
+        cur = conn.cursor(cursor_factory=RealDictCursor)
+        cur.execute(f"""
+            INSERT INTO {SCHEMA}.pages (slug, title, subtitle, content, seo_title, seo_description, published)
+            VALUES (%s, %s, %s, %s, %s, %s, %s) RETURNING *
+        """, (slug, title, body.get('subtitle', ''), body.get('content', ''),
+              body.get('seo_title', title), body.get('seo_description', ''), body.get('published', True)))
+        page = cur.fetchone()
+        conn.commit()
+        conn.close()
+        return resp(200, {'ok': True, 'page': page})
+
+    # PUT /pages/:id — обновить страницу
+    if method == 'PUT' and '/pages/' in path:
+        parts = path.split('/')
+        page_id = next((parts[i+1] for i, p in enumerate(parts) if p == 'pages' and i+1 < len(parts)), None)
+        conn = get_conn()
+        cur = conn.cursor(cursor_factory=RealDictCursor)
+        cur.execute(f"""
+            UPDATE {SCHEMA}.pages SET
+              title = %s, subtitle = %s, content = %s,
+              seo_title = %s, seo_description = %s,
+              published = %s, updated_at = NOW()
+            WHERE id = %s RETURNING *
+        """, (body.get('title', ''), body.get('subtitle', ''), body.get('content', ''),
+              body.get('seo_title', ''), body.get('seo_description', ''),
+              body.get('published', True), page_id))
+        page = cur.fetchone()
+        conn.commit()
+        conn.close()
+        if not page:
+            return resp(404, {'error': 'Страница не найдена'})
+        return resp(200, {'ok': True, 'page': page})
+
+    # DELETE /pages/:id — удалить страницу
+    if method == 'DELETE' and '/pages/' in path:
+        parts = path.split('/')
+        page_id = next((parts[i+1] for i, p in enumerate(parts) if p == 'pages' and i+1 < len(parts)), None)
+        conn = get_conn()
+        cur = conn.cursor()
+        cur.execute(f"DELETE FROM {SCHEMA}.pages WHERE id = %s", (page_id,))
         conn.commit()
         conn.close()
         return resp(200, {'ok': True})
