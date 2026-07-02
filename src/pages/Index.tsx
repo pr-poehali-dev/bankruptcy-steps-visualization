@@ -27,9 +27,9 @@ const stages: Stage[] = [
     short: 'Старт процедуры',
     duration: '1–2 недели',
     icon: 'FileText',
-    color: '#6366F1',
-    gradient: 'from-indigo-500 to-violet-600',
-    glow: 'shadow-indigo-500/50',
+    color: '#1E3A8A',
+    gradient: 'from-blue-800 to-blue-900',
+    glow: 'shadow-blue-900/10',
     hint: 'Заявление подаётся в арбитражный суд или через МФЦ при долге от 25 000 ₽',
     details: [
       'Сбор документов: паспорт, СНИЛС, список кредиторов и долгов',
@@ -44,9 +44,9 @@ const stages: Stage[] = [
     short: 'Проверка обоснованности',
     duration: '1–3 месяца',
     icon: 'Scale',
-    color: '#EC4899',
-    gradient: 'from-pink-500 to-rose-600',
-    glow: 'shadow-pink-500/50',
+    color: '#1D4ED8',
+    gradient: 'from-blue-700 to-blue-800',
+    glow: 'shadow-blue-800/10',
     hint: 'Суд проверяет заявление и признаёт его обоснованным или отклоняет',
     details: [
       'Первое судебное заседание по делу',
@@ -61,9 +61,9 @@ const stages: Stage[] = [
     short: 'План погашения',
     duration: 'до 3 лет',
     icon: 'CalendarClock',
-    color: '#F59E0B',
-    gradient: 'from-amber-500 to-orange-600',
-    glow: 'shadow-amber-500/50',
+    color: '#2563EB',
+    gradient: 'from-blue-600 to-blue-700',
+    glow: 'shadow-blue-700/10',
     hint: 'Если есть доход — суд утверждает план погашения на срок до 3 лет',
     details: [
       'Разработка плана реструктуризации',
@@ -78,9 +78,9 @@ const stages: Stage[] = [
     short: 'Продажа активов',
     duration: '6 месяцев',
     icon: 'Gavel',
-    color: '#EF4444',
-    gradient: 'from-red-500 to-rose-700',
-    glow: 'shadow-red-500/50',
+    color: '#3B82F6',
+    gradient: 'from-blue-500 to-blue-600',
+    glow: 'shadow-blue-600/10',
     hint: 'Имущество продаётся с торгов, деньги делятся между кредиторами',
     details: [
       'Формирование конкурсной массы',
@@ -95,9 +95,9 @@ const stages: Stage[] = [
     short: 'Финал процедуры',
     duration: 'по итогу',
     icon: 'CircleCheckBig',
-    color: '#10B981',
-    gradient: 'from-emerald-500 to-green-600',
-    glow: 'shadow-emerald-500/50',
+    color: '#0F766E',
+    gradient: 'from-teal-700 to-teal-800',
+    glow: 'shadow-teal-800/10',
     hint: 'Оставшиеся долги списываются, гражданин освобождается от обязательств',
     details: [
       'Суд выносит определение о завершении процедуры',
@@ -113,32 +113,29 @@ const Index = () => {
 
   return (
     <TooltipProvider delayDuration={150}>
-      <div className="min-h-screen bg-[#0B0B1A] text-white overflow-hidden relative font-body">
+      <div className="min-h-screen bg-slate-50 text-slate-900 overflow-hidden relative font-body">
         {/* Background decorations */}
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute top-[-10%] left-[-5%] w-[500px] h-[500px] rounded-full bg-indigo-600/20 blur-[120px]" />
-          <div className="absolute top-[30%] right-[-10%] w-[600px] h-[600px] rounded-full bg-pink-600/20 blur-[130px]" />
-          <div className="absolute bottom-[-10%] left-[20%] w-[500px] h-[500px] rounded-full bg-emerald-600/20 blur-[120px]" />
+          <div className="absolute top-[-10%] left-[-5%] w-[500px] h-[500px] rounded-full bg-blue-200/40 blur-[120px]" />
+          <div className="absolute bottom-[-10%] right-[10%] w-[500px] h-[500px] rounded-full bg-blue-100/50 blur-[120px]" />
         </div>
 
         {/* Hero */}
         <header className="relative z-10 max-w-6xl mx-auto px-6 pt-20 pb-10 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm mb-6 animate-fade-in">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-sm text-white/70">Пошаговая инструкция 2025</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slate-200 shadow-sm mb-6 animate-fade-in">
+            <span className="w-2 h-2 rounded-full bg-blue-700" />
+            <span className="text-sm text-slate-600">Пошаговая инструкция 2025</span>
           </div>
           <h1
-            className="font-heading font-black text-5xl md:text-7xl leading-[1.05] mb-6 animate-fade-in"
+            className="font-heading font-extrabold text-5xl md:text-7xl leading-[1.05] mb-6 animate-fade-in text-slate-900"
             style={{ animationDelay: '0.1s', opacity: 0 }}
           >
-            <span className="bg-gradient-to-r from-indigo-400 via-pink-400 to-emerald-400 bg-clip-text text-transparent">
-              Этапы банкротства
-            </span>
+            <span className="text-blue-800">Этапы банкротства</span>
             <br />
             физического лица
           </h1>
           <p
-            className="text-lg md:text-xl text-white/60 max-w-2xl mx-auto animate-fade-in"
+            className="text-lg md:text-xl text-slate-500 max-w-2xl mx-auto animate-fade-in"
             style={{ animationDelay: '0.2s', opacity: 0 }}
           >
             Интерактивная схема всего пути — от подачи заявления до полного списания
@@ -150,7 +147,7 @@ const Index = () => {
         <main className="relative z-10 max-w-6xl mx-auto px-6 pb-24">
           <div className="relative mt-16">
             {/* Progress line (desktop) */}
-            <div className="hidden lg:block absolute top-[64px] left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 via-pink-500 to-emerald-500 rounded-full opacity-40" />
+            <div className="hidden lg:block absolute top-[64px] left-0 right-0 h-0.5 bg-slate-200 rounded-full" />
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 lg:gap-4">
               {stages.map((stage, i) => (
@@ -163,33 +160,29 @@ const Index = () => {
                     >
                       {/* Number badge */}
                       <div className="relative mb-4">
-                        <span
-                          className="absolute inset-0 rounded-2xl animate-pulse-ring"
-                          style={{ backgroundColor: stage.color }}
-                        />
                         <div
-                          className={`relative w-32 h-32 rounded-2xl bg-gradient-to-br ${stage.gradient} flex items-center justify-center shadow-xl ${stage.glow} transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-2`}
+                          className={`relative w-28 h-28 rounded-2xl bg-gradient-to-br ${stage.gradient} flex items-center justify-center shadow-md ${stage.glow} ring-4 ring-white transition-all duration-300 group-hover:-translate-y-1.5 group-hover:shadow-lg`}
                         >
                           <Icon
                             name={stage.icon}
-                            size={44}
+                            size={40}
                             className="text-white"
                             fallback="Circle"
                           />
-                          <span className="absolute -top-3 -right-3 w-9 h-9 rounded-full bg-white text-[#0B0B1A] font-heading font-black text-sm flex items-center justify-center shadow-lg">
+                          <span className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-white text-slate-900 font-heading font-bold text-sm flex items-center justify-center shadow-sm border border-slate-100">
                             {stage.id}
                           </span>
                         </div>
                       </div>
 
-                      <h3 className="font-heading font-bold text-lg mb-1 transition-colors group-hover:text-white text-white/90">
+                      <h3 className="font-heading font-semibold text-lg mb-1 transition-colors group-hover:text-blue-800 text-slate-800">
                         {stage.title}
                       </h3>
-                      <p className="text-sm text-white/50 mb-2">{stage.short}</p>
+                      <p className="text-sm text-slate-400 mb-2">{stage.short}</p>
                       <span
-                        className="inline-flex items-center gap-1 text-xs font-semibold px-3 py-1 rounded-full"
+                        className="inline-flex items-center gap-1 text-xs font-medium px-3 py-1 rounded-full"
                         style={{
-                          backgroundColor: `${stage.color}22`,
+                          backgroundColor: `${stage.color}12`,
                           color: stage.color,
                         }}
                       >
@@ -200,7 +193,7 @@ const Index = () => {
                   </TooltipTrigger>
                   <TooltipContent
                     side="bottom"
-                    className="max-w-xs bg-[#1A1A2E] border-white/10 text-white/80 text-center"
+                    className="max-w-xs bg-slate-900 border-slate-800 text-white text-center"
                   >
                     {stage.hint}
                   </TooltipContent>
@@ -222,11 +215,11 @@ const Index = () => {
             ].map((s) => (
               <div
                 key={s.label}
-                className="rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm p-5 hover:bg-white/10 transition-colors"
+                className="rounded-2xl bg-white border border-slate-200 shadow-sm p-5 hover:shadow-md hover:border-blue-200 transition-all"
               >
-                <Icon name={s.icon} size={26} className="text-pink-400 mb-3" fallback="Star" />
-                <div className="font-heading font-bold text-xl">{s.value}</div>
-                <div className="text-sm text-white/50">{s.label}</div>
+                <Icon name={s.icon} size={26} className="text-blue-700 mb-3" fallback="Star" />
+                <div className="font-heading font-bold text-xl text-slate-900">{s.value}</div>
+                <div className="text-sm text-slate-500">{s.label}</div>
               </div>
             ))}
           </div>
@@ -235,52 +228,52 @@ const Index = () => {
         {/* Modal */}
         {activeStage && (
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm animate-fade-in"
             onClick={() => setActiveStage(null)}
           >
             <div
-              className="relative w-full max-w-lg rounded-3xl bg-[#12122A] border border-white/10 p-8 animate-scale-in"
+              className="relative w-full max-w-lg rounded-3xl bg-white border border-slate-200 shadow-2xl p-8 animate-scale-in"
               onClick={(e) => e.stopPropagation()}
             >
               <button
                 onClick={() => setActiveStage(null)}
-                className="absolute top-5 right-5 w-9 h-9 rounded-full bg-white/5 hover:bg-white/15 flex items-center justify-center transition-colors"
+                className="absolute top-5 right-5 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors"
               >
-                <Icon name="X" size={18} className="text-white/70" />
+                <Icon name="X" size={18} className="text-slate-500" />
               </button>
 
               <div
-                className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${activeStage.gradient} flex items-center justify-center shadow-xl ${activeStage.glow} mb-5`}
+                className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${activeStage.gradient} flex items-center justify-center shadow-md ${activeStage.glow} mb-5`}
               >
                 <Icon name={activeStage.icon} size={36} className="text-white" fallback="Circle" />
               </div>
 
               <div className="flex items-center gap-3 mb-2">
                 <span
-                  className="text-sm font-heading font-black px-3 py-1 rounded-full"
-                  style={{ backgroundColor: `${activeStage.color}22`, color: activeStage.color }}
+                  className="text-sm font-heading font-semibold px-3 py-1 rounded-full"
+                  style={{ backgroundColor: `${activeStage.color}12`, color: activeStage.color }}
                 >
                   Этап {activeStage.id}
                 </span>
-                <span className="inline-flex items-center gap-1 text-sm text-white/50">
+                <span className="inline-flex items-center gap-1 text-sm text-slate-400">
                   <Icon name="Clock" size={14} />
                   {activeStage.duration}
                 </span>
               </div>
 
-              <h2 className="font-heading font-black text-3xl mb-2">{activeStage.title}</h2>
-              <p className="text-white/60 mb-6">{activeStage.hint}</p>
+              <h2 className="font-heading font-bold text-3xl mb-2 text-slate-900">{activeStage.title}</h2>
+              <p className="text-slate-500 mb-6">{activeStage.hint}</p>
 
               <div className="space-y-3">
                 {activeStage.details.map((d, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <div
                       className="mt-0.5 w-6 h-6 shrink-0 rounded-full flex items-center justify-center"
-                      style={{ backgroundColor: `${activeStage.color}22` }}
+                      style={{ backgroundColor: `${activeStage.color}12` }}
                     >
                       <Icon name="Check" size={14} style={{ color: activeStage.color }} />
                     </div>
-                    <span className="text-white/80">{d}</span>
+                    <span className="text-slate-700">{d}</span>
                   </div>
                 ))}
               </div>
