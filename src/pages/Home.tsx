@@ -223,8 +223,11 @@ const Home = () => {
                 color: '#1B3F7C', bg: 'bg-blue-50',
                 title: g('card_stages_title', 'Этапы процедуры'),
                 desc: g('card_stages_desc', 'Пять ключевых шагов — от подачи заявления в суд до полного списания долгов.'),
-                stats: [{ icon: 'Clock', text: '5 этапов' }, { icon: 'Timer', text: '6–12 месяцев' }],
-                tags: ['Подача заявления', 'Суд', 'Реструктуризация', 'Реализация', 'Списание'],
+                stats: [
+                  { icon: g('card_stages_stat_1_icon', 'Clock'), text: g('card_stages_stat_1_text', '5 этапов') },
+                  { icon: g('card_stages_stat_2_icon', 'Timer'), text: g('card_stages_stat_2_text', '6–12 месяцев') },
+                ],
+                tags: [1,2,3,4,5].map(n => g(`card_stages_tag_${n}`, '')).filter(Boolean),
                 link: g('card_stages_link', 'Перейти к этапам'),
               },
               {
@@ -232,8 +235,11 @@ const Home = () => {
                 color: '#92400E', bg: 'bg-amber-50',
                 title: g('card_consequences_title', 'Последствия банкротства'),
                 desc: g('card_consequences_desc', 'Ограничения по срокам, что сохраняется, какие долги не списываются.'),
-                stats: [{ icon: 'Ban', text: '5 ограничений' }, { icon: 'ShieldCheck', text: 'Жильё сохраняется' }],
-                tags: ['Ограничения', 'Кредиты', 'Руководство', 'Что сохранится', 'Сроки'],
+                stats: [
+                  { icon: g('card_consequences_stat_1_icon', 'Ban'), text: g('card_consequences_stat_1_text', '5 ограничений') },
+                  { icon: g('card_consequences_stat_2_icon', 'ShieldCheck'), text: g('card_consequences_stat_2_text', 'Жильё сохраняется') },
+                ],
+                tags: [1,2,3,4,5].map(n => g(`card_consequences_tag_${n}`, '')).filter(Boolean),
                 link: g('card_consequences_link', 'Перейти к последствиям'),
               },
               {
@@ -241,8 +247,11 @@ const Home = () => {
                 color: '#065F46', bg: 'bg-emerald-50',
                 title: g('card_payments_title', 'Обязательные платежи'),
                 desc: g('card_payments_desc', 'Госпошлина, вознаграждение управляющего, публикации и доп. расходы.'),
-                stats: [{ icon: 'Landmark', text: 'от 300 ₽' }, { icon: 'Building2', text: 'МФЦ — бесплатно' }],
-                tags: ['Госпошлина', 'Управляющий', 'Публикации', 'МФЦ бесплатно'],
+                stats: [
+                  { icon: g('card_payments_stat_1_icon', 'Landmark'), text: g('card_payments_stat_1_text', 'от 300 ₽') },
+                  { icon: g('card_payments_stat_2_icon', 'Building2'), text: g('card_payments_stat_2_text', 'МФЦ — бесплатно') },
+                ],
+                tags: [1,2,3,4,5].map(n => g(`card_payments_tag_${n}`, '')).filter(Boolean),
                 link: g('card_payments_link', 'Посмотреть платежи'),
               },
             ].map((card) => (

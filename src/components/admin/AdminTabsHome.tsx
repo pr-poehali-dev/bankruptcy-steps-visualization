@@ -49,6 +49,71 @@ export const ContentTab = ({ settings, onChange, loading, saveMsg, onSave }: Tab
       </div>
     </div>
 
+    {/* Info cards */}
+    {[
+      {
+        id: 'stages', label: 'Карточка «Этапы процедуры»',
+        color: '#1B3F7C',
+        defaults: { stat1: '5 этапов', stat2: '6–12 месяцев', tags: ['Подача заявления','Суд','Реструктуризация','Реализация','Списание'] },
+      },
+      {
+        id: 'consequences', label: 'Карточка «Последствия банкротства»',
+        color: '#92400E',
+        defaults: { stat1: '5 ограничений', stat2: 'Жильё сохраняется', tags: ['Ограничения','Кредиты','Руководство','Что сохранится','Сроки'] },
+      },
+      {
+        id: 'payments', label: 'Карточка «Обязательные платежи»',
+        color: '#065F46',
+        defaults: { stat1: 'от 300 ₽', stat2: 'МФЦ — бесплатно', tags: ['Госпошлина','Управляющий','Публикации','МФЦ бесплатно',''] },
+      },
+    ].map(card => (
+      <div key={card.id} className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+        <div className="flex items-center gap-3 mb-5">
+          <div className="w-3 h-8 rounded-full" style={{ backgroundColor: card.color }} />
+          <h3 className="font-heading font-bold text-slate-900">{card.label}</h3>
+        </div>
+        <div className="space-y-4">
+          {textInput(`card_${card.id}_title`, 'Заголовок', settings[`card_${card.id}_title`] || '', onChange)}
+          {textareaInput(`card_${card.id}_desc`, 'Описание', settings[`card_${card.id}_desc`] || '', onChange)}
+          {textInput(`card_${card.id}_link`, 'Текст ссылки', settings[`card_${card.id}_link`] || '', onChange)}
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-xs font-semibold text-slate-600 mb-1.5 uppercase tracking-wide">Метрика 1</label>
+              <input type="text" placeholder={card.defaults.stat1} value={settings[`card_${card.id}_stat_1_text`] || ''} onChange={e => onChange(`card_${card.id}_stat_1_text`, e.target.value)}
+                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#1B3F7C]" />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-slate-600 mb-1.5 uppercase tracking-wide">Метрика 2</label>
+              <input type="text" placeholder={card.defaults.stat2} value={settings[`card_${card.id}_stat_2_text`] || ''} onChange={e => onChange(`card_${card.id}_stat_2_text`, e.target.value)}
+                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#1B3F7C]" />
+            </div>
+          </div>
+          <div>
+            <label className="block text-xs font-semibold text-slate-600 mb-2 uppercase tracking-wide">Теги (до 5)</label>
+            <div className="flex flex-wrap gap-2 mb-2">
+              {[1,2,3,4,5].map(n => (
+                <input key={n} type="text" placeholder={card.defaults.tags[n-1] || `Тег ${n}`}
+                  value={settings[`card_${card.id}_tag_${n}`] || ''}
+                  onChange={e => onChange(`card_${card.id}_tag_${n}`, e.target.value)}
+                  className="flex-1 min-w-[120px] px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#1B3F7C]" />
+              ))}
+            </div>
+            <div className="flex flex-wrap gap-1.5 mt-2">
+              {[1,2,3,4,5].map(n => {
+                const val = settings[`card_${card.id}_tag_${n}`] || card.defaults.tags[n-1] || '';
+                return val ? (
+                  <span key={n} className="text-xs px-2.5 py-1 rounded-full border font-medium"
+                    style={{ borderColor: `${card.color}30`, color: card.color, backgroundColor: `${card.color}08` }}>
+                    {val}
+                  </span>
+                ) : null;
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+    ))}
+
     <SaveBar loading={loading} saveMsg={saveMsg} onSave={onSave} />
   </div>
 );
