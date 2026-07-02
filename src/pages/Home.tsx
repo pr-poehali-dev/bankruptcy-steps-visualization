@@ -407,16 +407,9 @@ const Home = () => {
                     ))}
                   </div>
                 </div>
-                <div className="mt-10 pt-8 border-t border-white/10 flex items-center gap-3">
-                  <img
-                    src="https://cdn.poehali.dev/projects/3e7e35fe-ef29-4a30-b52d-2ba872294646/bucket/9887576b-326b-4273-a0f5-2a485157ab4a.png"
-                    alt="АБ Правовой статус"
-                    className="h-10 w-auto object-contain brightness-0 invert"
-                  />
-                  <div>
-                    <div className="text-xs text-blue-400">Адвокатское бюро</div>
-                    <div className="font-heading font-bold text-white text-sm">«Правовой статус»</div>
-                  </div>
+                <div className="mt-10 pt-8 border-t border-white/10">
+                  <div className="text-xs text-blue-400">Адвокатское бюро</div>
+                  <div className="font-heading font-bold text-white text-sm">«Правовой статус»</div>
                 </div>
               </div>
 
