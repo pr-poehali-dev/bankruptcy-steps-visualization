@@ -4,7 +4,7 @@ import Icon from '@/components/ui/icon';
 
 const ADMIN_URL = 'https://functions.poehali.dev/f93de05a-95a2-4dbb-bfdd-35104dcbefc5';
 
-type Tab = 'stats' | 'leads' | 'content' | 'seo';
+type Tab = 'stats' | 'leads' | 'content' | 'forms' | 'seo';
 
 interface Lead {
   id: number;
@@ -68,7 +68,7 @@ const AdminPanel = () => {
   useEffect(() => {
     if (tab === 'stats') api('/stats').then(d => d && setStats(d));
     if (tab === 'leads') api('/leads').then(d => d && setLeads(d.leads || []));
-    if (tab === 'content' || tab === 'seo') api('/settings').then(d => d && setSettings(d.settings || {}));
+    if (tab === 'content' || tab === 'seo' || tab === 'forms') api('/settings').then(d => d && setSettings(d.settings || {}));
   }, [tab, api]);
 
   const handleLogout = () => {
@@ -93,6 +93,7 @@ const AdminPanel = () => {
     { id: 'stats', label: 'Статистика', icon: 'BarChart3' },
     { id: 'leads', label: 'Заявки', icon: 'Inbox' },
     { id: 'content', label: 'Контент', icon: 'FileEdit' },
+    { id: 'forms', label: 'Формы и кнопки', icon: 'MousePointerClick' },
     { id: 'seo', label: 'SEO', icon: 'Search' },
   ];
 
@@ -312,6 +313,150 @@ const AdminPanel = () => {
                       className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#1B3F7C]" />
                   </div>
                 ))}
+              </div>
+            </div>
+
+            <SaveBar loading={loading} saveMsg={saveMsg} onSave={handleSaveSettings} />
+          </div>
+        )}
+
+        {/* FORMS & BUTTONS */}
+        {tab === 'forms' && (
+          <div className="space-y-5">
+
+            {/* Кнопки сайта */}
+            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-9 h-9 rounded-xl bg-[#1B3F7C]/10 flex items-center justify-center">
+                  <Icon name="MousePointerClick" size={18} className="text-[#1B3F7C]" fallback="Circle" />
+                </div>
+                <h3 className="font-heading font-bold text-slate-900">Кнопки сайта</h3>
+              </div>
+              <div className="space-y-4">
+                {[
+                  { key: 'btn_header_cta', label: 'Кнопка в шапке', hint: 'Кнопка «Консультация» в правом верхнем углу' },
+                  { key: 'btn_hero_primary', label: 'Главная кнопка Hero', hint: 'Основная кнопка на главном экране' },
+                  { key: 'btn_hero_secondary', label: 'Вторая кнопка Hero', hint: 'Кнопка рядом с главной (прозрачная)' },
+                  { key: 'btn_form_submit', label: 'Кнопка отправки формы', hint: 'Текст кнопки в форме заявки' },
+                ].map(f => (
+                  <div key={f.key}>
+                    <label className="block text-xs font-semibold text-slate-600 mb-1 uppercase tracking-wide">{f.label}</label>
+                    <p className="text-xs text-slate-400 mb-1.5">{f.hint}</p>
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="text"
+                        value={settings[f.key] || ''}
+                        onChange={e => setSettings(s => ({ ...s, [f.key]: e.target.value }))}
+                        className="flex-1 px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#1B3F7C]"
+                      />
+                      <div className="shrink-0 px-4 py-2.5 rounded-xl bg-[#1B3F7C] text-white text-sm font-semibold whitespace-nowrap">
+                        {settings[f.key] || '...'}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Поля формы */}
+            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-9 h-9 rounded-xl bg-[#1B3F7C]/10 flex items-center justify-center">
+                  <Icon name="FormInput" size={18} className="text-[#1B3F7C]" fallback="Circle" />
+                </div>
+                <h3 className="font-heading font-bold text-slate-900">Поля формы заявки</h3>
+              </div>
+              <div className="space-y-4">
+                {[
+                  { key: 'form_field_name_placeholder', label: 'Плейсхолдер поля «Имя»' },
+                  { key: 'form_field_phone_placeholder', label: 'Плейсхолдер поля «Телефон»' },
+                  { key: 'form_field_message_label', label: 'Подпись поля «Сообщение»' },
+                  { key: 'form_field_message_placeholder', label: 'Плейсхолдер поля «Сообщение»' },
+                ].map(f => (
+                  <div key={f.key}>
+                    <label className="block text-xs font-semibold text-slate-600 mb-1.5 uppercase tracking-wide">{f.label}</label>
+                    <input
+                      type="text"
+                      value={settings[f.key] || ''}
+                      onChange={e => setSettings(s => ({ ...s, [f.key]: e.target.value }))}
+                      className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#1B3F7C]"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Гарантии в форме */}
+            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-9 h-9 rounded-xl bg-[#1B3F7C]/10 flex items-center justify-center">
+                  <Icon name="ShieldCheck" size={18} className="text-[#1B3F7C]" fallback="Circle" />
+                </div>
+                <h3 className="font-heading font-bold text-slate-900">Гарантии (левая панель формы)</h3>
+              </div>
+              <div className="space-y-4">
+                {[
+                  { key: 'form_guarantee_1', label: 'Гарантия 1' },
+                  { key: 'form_guarantee_2', label: 'Гарантия 2' },
+                  { key: 'form_guarantee_3', label: 'Гарантия 3' },
+                ].map(f => (
+                  <div key={f.key} className="flex items-center gap-3">
+                    <div className="w-7 h-7 rounded-lg bg-white/10 border border-slate-200 flex items-center justify-center shrink-0">
+                      <Icon name="Check" size={13} className="text-[#1B3F7C]" />
+                    </div>
+                    <input
+                      type="text"
+                      value={settings[f.key] || ''}
+                      onChange={e => setSettings(s => ({ ...s, [f.key]: e.target.value }))}
+                      className="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#1B3F7C]"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Сообщение после отправки */}
+            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-9 h-9 rounded-xl bg-green-50 flex items-center justify-center">
+                  <Icon name="CheckCircle" size={18} className="text-green-600" fallback="Circle" />
+                </div>
+                <h3 className="font-heading font-bold text-slate-900">Сообщение после отправки</h3>
+              </div>
+              <div className="space-y-4">
+                {[
+                  { key: 'form_success_title', label: 'Заголовок', multiline: false },
+                  { key: 'form_success_text', label: 'Текст', multiline: true },
+                  { key: 'form_privacy_text', label: 'Текст о персональных данных', multiline: false },
+                ].map(f => (
+                  <div key={f.key}>
+                    <label className="block text-xs font-semibold text-slate-600 mb-1.5 uppercase tracking-wide">{f.label}</label>
+                    {f.multiline ? (
+                      <textarea
+                        rows={2}
+                        value={settings[f.key] || ''}
+                        onChange={e => setSettings(s => ({ ...s, [f.key]: e.target.value }))}
+                        className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#1B3F7C] resize-none"
+                      />
+                    ) : (
+                      <input
+                        type="text"
+                        value={settings[f.key] || ''}
+                        onChange={e => setSettings(s => ({ ...s, [f.key]: e.target.value }))}
+                        className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#1B3F7C]"
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              {/* Preview */}
+              <div className="mt-5 border border-slate-200 rounded-xl p-5 bg-slate-50 text-center">
+                <div className="w-12 h-12 rounded-xl bg-teal-50 flex items-center justify-center mx-auto mb-3">
+                  <Icon name="CheckCheck" size={22} className="text-teal-600" fallback="Check" />
+                </div>
+                <div className="font-heading font-bold text-slate-900 mb-1">{settings['form_success_title'] || '—'}</div>
+                <div className="text-xs text-slate-500 leading-relaxed">{settings['form_success_text'] || '—'}</div>
               </div>
             </div>
 
