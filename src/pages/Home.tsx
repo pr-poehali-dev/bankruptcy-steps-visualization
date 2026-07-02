@@ -187,7 +187,7 @@ const Home = () => {
             <p className="text-slate-500">Интерактивные разделы с детальными схемами процедуры</p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Stages card */}
             <button
               onClick={() => navigate('/stages')}
@@ -241,6 +241,34 @@ const Home = () => {
                 <Icon name="ArrowRight" size={16} />
               </div>
             </button>
+
+            {/* Payments card */}
+            <button
+              onClick={() => navigate('/payments')}
+              className="group bg-white border border-slate-200 rounded-3xl p-8 shadow-sm hover:shadow-xl hover:border-teal-200 transition-all duration-300 text-left animate-fade-in"
+              style={{ animationDelay: '0.56s', opacity: 0 }}
+            >
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-teal-700 to-teal-900 flex items-center justify-center mb-6 shadow-md group-hover:-translate-y-1 transition-transform duration-300">
+                <Icon name="Receipt" size={28} className="text-white" fallback="Wallet" />
+              </div>
+              <h3 className="font-heading font-bold text-2xl text-slate-900 mb-2">Обязательные платежи</h3>
+              <p className="text-slate-500 text-sm leading-relaxed mb-6">
+                Госпошлина, вознаграждение управляющего, публикации и доп. расходы.
+                Сводная таблица всех затрат на процедуру.
+              </p>
+              <div className="flex flex-wrap gap-2 mb-8">
+                {['Госпошлина', 'Управляющий', 'Публикации', 'МФЦ бесплатно'].map((t) => (
+                  <span key={t} className="text-xs px-3 py-1 rounded-full bg-teal-50 text-teal-700 font-medium">
+                    {t}
+                  </span>
+                ))}
+              </div>
+              <div className="flex items-center gap-2 text-teal-700 font-semibold text-sm group-hover:gap-3 transition-all">
+                Посмотреть платежи
+                <Icon name="ArrowRight" size={16} />
+              </div>
+            </button>
+
           </div>
         </section>
 
