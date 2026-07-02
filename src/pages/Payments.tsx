@@ -45,12 +45,9 @@ const Payments = () => {
 
       {/* Nav */}
       <nav className="relative z-10 max-w-6xl mx-auto px-6 pt-8 flex items-center gap-3">
-        <button
-          onClick={() => navigate('/')}
-          className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 text-sm font-semibold hover:bg-[#1B3F7C] hover:text-white hover:border-[#1B3F7C] transition-all shadow-sm"
-        >
-          <Icon name="Home" size={14} />
-          На главную
+        <button onClick={() => navigate('/')} className="flex items-center gap-2 text-sm text-slate-500 hover:text-blue-700 transition-colors">
+          <Icon name="ChevronLeft" size={16} />
+          Главная
         </button>
         <span className="text-slate-300">/</span>
         <span className="text-sm text-slate-700 font-medium">{g('pay_page_title_3', 'Обязательные платежи')}</span>
@@ -178,6 +175,13 @@ const Payments = () => {
           >
             <Icon name="AlertTriangle" size={16} fallback="Alert" />
             {g('card_consequences_title', 'Последствия банкротства')}
+          </button>
+          <button
+            onClick={() => navigate('/')}
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-white border border-slate-200 text-slate-700 font-semibold text-sm hover:bg-[#1B3F7C] hover:text-white hover:border-[#1B3F7C] transition-all shadow-sm"
+          >
+            <Icon name="Home" size={16} />
+            На главную
           </button>
         </div>
 

@@ -131,20 +131,11 @@ const Index = () => {
                 </div>
               </button>
             </div>
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => navigate('/')}
-                className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1B3F7C] text-white text-sm font-semibold hover:bg-[#163270] transition-colors"
-              >
-                <Icon name="Home" size={14} />
-                На главную
-              </button>
-              <nav className="hidden sm:flex items-center gap-2 text-sm text-slate-400">
-                <span>Главная</span>
-                <Icon name="ChevronRight" size={13} className="text-slate-300" />
-                <span className="text-slate-700 font-medium">Этапы процедуры</span>
-              </nav>
-            </div>
+            <nav className="flex items-center gap-2 text-sm text-slate-500">
+              <button onClick={() => navigate('/')} className="hover:text-[#1B3F7C] transition-colors">Главная</button>
+              <Icon name="ChevronRight" size={13} className="text-slate-300" />
+              <span className="text-slate-900 font-medium">Этапы процедуры</span>
+            </nav>
           </div>
         </header>
 
@@ -264,6 +255,17 @@ const Index = () => {
             >
               Перейти
               <Icon name="ArrowRight" size={16} />
+            </button>
+          </div>
+
+          {/* На главную */}
+          <div className="mt-8 text-center animate-fade-in" style={{ animationDelay: '0.9s', opacity: 0 }}>
+            <button
+              onClick={() => navigate('/')}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-white border border-slate-200 text-slate-700 font-semibold text-sm hover:bg-[#1B3F7C] hover:text-white hover:border-[#1B3F7C] transition-all shadow-sm"
+            >
+              <Icon name="Home" size={16} />
+              На главную
             </button>
           </div>
 
