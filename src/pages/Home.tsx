@@ -79,63 +79,63 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 font-body relative overflow-hidden">
-      {/* Background */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute top-[-10%] left-[-5%] w-[600px] h-[600px] rounded-full bg-blue-200/30 blur-[130px]" />
-        <div className="absolute bottom-[-10%] right-[5%] w-[500px] h-[500px] rounded-full bg-blue-100/40 blur-[120px]" />
-      </div>
+    <div className="min-h-screen bg-white font-body">
 
       {/* Header */}
-      <header className="relative z-10 border-b border-slate-200 bg-white/80 backdrop-blur-sm">
+      <header className="relative z-20 border-b border-slate-100 bg-white">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <img
               src="https://cdn.poehali.dev/projects/3e7e35fe-ef29-4a30-b52d-2ba872294646/bucket/9887576b-326b-4273-a0f5-2a485157ab4a.png"
               alt="АБ Правовой статус"
-              className="h-10 w-auto object-contain"
+              className="h-9 w-auto object-contain"
             />
             <div>
               <div className="font-heading font-bold text-slate-900 text-sm leading-none">АБ «Правовой статус»</div>
-              <div className="text-xs text-slate-500 leading-none mt-0.5">Адвокатское бюро</div>
+              <div className="text-xs text-slate-400 leading-none mt-0.5">Адвокатское бюро</div>
             </div>
           </div>
           <a
             href="tel:+78001234567"
-            className="hidden md:flex items-center gap-2 text-sm font-semibold text-blue-800 hover:text-blue-900 transition-colors"
+            className="hidden md:flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0F2A6B] text-white text-sm font-semibold hover:bg-[#0a1f52] transition-colors"
           >
-            <Icon name="Phone" size={15} />
+            <Icon name="Phone" size={14} />
             Бесплатная консультация
           </a>
         </div>
       </header>
 
-      <div className="relative z-10 max-w-6xl mx-auto px-6">
-
-        {/* Hero */}
-        <section className="py-20 md:py-28 grid md:grid-cols-2 gap-12 items-center">
+      {/* Hero — dark */}
+      <section className="relative overflow-hidden bg-[#0A1628]">
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute top-0 right-0 w-[700px] h-[700px] rounded-full bg-blue-600/10 blur-[120px]" />
+          <div className="absolute bottom-0 left-[-100px] w-[500px] h-[500px] rounded-full bg-blue-900/30 blur-[100px]" />
+          {/* Grid texture */}
+          <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
+        </div>
+        <div className="relative z-10 max-w-6xl mx-auto px-6 py-24 md:py-32 grid md:grid-cols-2 gap-14 items-center">
           <div className="animate-fade-in">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slate-200 shadow-sm mb-7">
-              <span className="w-2 h-2 rounded-full bg-blue-700" />
-              <span className="text-sm text-slate-600">Банкротство физических лиц</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/8 border border-white/10 mb-8">
+              <span className="w-2 h-2 rounded-full bg-blue-400" />
+              <span className="text-sm text-blue-200">Банкротство физических лиц</span>
             </div>
-            <h1 className="font-heading font-extrabold text-4xl md:text-5xl text-slate-900 leading-[1.1] mb-5">
+            <h1 className="font-heading font-extrabold text-4xl md:text-6xl text-white leading-[1.05] mb-6">
               Избавьтесь от долгов
               <br />
-              <span className="text-blue-800">законно и навсегда</span>
+              <span className="text-blue-400">законно и навсегда</span>
             </h1>
-            <p className="text-slate-500 text-lg leading-relaxed mb-8">
+            <p className="text-slate-400 text-lg leading-relaxed mb-10 max-w-lg">
               Адвокатское бюро «Правовой статус» проведёт процедуру банкротства
               под ключ — от первичного анализа до полного списания задолженности.
             </p>
             <div className="flex flex-wrap gap-3">
-              <button className="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl bg-blue-800 text-white font-semibold text-sm hover:bg-blue-900 transition-colors shadow-md">
+              <button className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-blue-500 text-white font-semibold text-sm hover:bg-blue-400 transition-colors shadow-lg shadow-blue-900/40">
                 <Icon name="MessageSquare" size={16} />
                 Получить консультацию
               </button>
               <button
                 onClick={() => navigate('/stages')}
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl bg-white border border-slate-200 text-slate-700 font-semibold text-sm hover:border-blue-200 hover:text-blue-800 transition-all shadow-sm"
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-white/8 border border-white/15 text-white font-semibold text-sm hover:bg-white/15 transition-all"
               >
                 Как это работает
                 <Icon name="ArrowRight" size={16} />
@@ -145,58 +145,61 @@ const Home = () => {
 
           {/* Hero aside */}
           <div className="animate-fade-in" style={{ animationDelay: '0.15s', opacity: 0 }}>
-            <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-8 space-y-5">
-              <div className="text-sm font-heading font-semibold text-slate-500 uppercase tracking-widest mb-2">Ваш результат</div>
+            <div className="bg-white/5 border border-white/10 rounded-3xl p-8 space-y-4 backdrop-blur-sm">
+              <div className="text-xs font-heading font-semibold text-blue-400 uppercase tracking-widest mb-4">Ваш результат</div>
               {[
-                { icon: 'CircleCheckBig', color: 'text-teal-600', bg: 'bg-teal-50', text: 'Полное списание долгов по решению суда' },
-                { icon: 'CircleCheckBig', color: 'text-teal-600', bg: 'bg-teal-50', text: 'Единственное жильё остаётся у вас' },
-                { icon: 'CircleCheckBig', color: 'text-teal-600', bg: 'bg-teal-50', text: 'Прекращение звонков от коллекторов' },
-                { icon: 'CircleCheckBig', color: 'text-teal-600', bg: 'bg-teal-50', text: 'Снятие арестов и исполнительных листов' },
-                { icon: 'CircleCheckBig', color: 'text-teal-600', bg: 'bg-teal-50', text: 'Чистая жизнь без долгового бремени' },
-              ].map((item, i) => (
+                'Полное списание долгов по решению суда',
+                'Единственное жильё остаётся у вас',
+                'Прекращение звонков от коллекторов',
+                'Снятие арестов и исполнительных листов',
+                'Чистая жизнь без долгового бремени',
+              ].map((text, i) => (
                 <div key={i} className="flex items-center gap-3">
-                  <div className={`w-8 h-8 shrink-0 rounded-lg ${item.bg} flex items-center justify-center`}>
-                    <Icon name={item.icon} size={16} className={item.color} fallback="Check" />
+                  <div className="w-5 h-5 shrink-0 rounded-full bg-blue-500/20 flex items-center justify-center">
+                    <Icon name="Check" size={11} className="text-blue-400" fallback="Check" />
                   </div>
-                  <span className="text-slate-700 text-sm">{item.text}</span>
+                  <span className="text-slate-300 text-sm">{text}</span>
                 </div>
               ))}
-              <div className="pt-4 border-t border-slate-100 flex items-center gap-3">
+              <div className="pt-5 border-t border-white/10 flex items-center gap-3">
                 <div className="flex -space-x-2">
-                  {['bg-blue-800', 'bg-blue-600', 'bg-teal-600'].map((c, i) => (
-                    <div key={i} className={`w-8 h-8 rounded-full ${c} border-2 border-white flex items-center justify-center`}>
-                      <Icon name="User" size={14} className="text-white" />
+                  {['bg-blue-600', 'bg-blue-500', 'bg-blue-400'].map((c, i) => (
+                    <div key={i} className={`w-8 h-8 rounded-full ${c} border-2 border-[#0A1628] flex items-center justify-center`}>
+                      <Icon name="User" size={13} className="text-white" />
                     </div>
                   ))}
                 </div>
-                <span className="text-sm text-slate-500">Более <strong className="text-slate-800">500 дел</strong> успешно завершено</span>
+                <span className="text-sm text-slate-400">Более <strong className="text-white">500 дел</strong> успешно завершено</span>
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
+
+      <div className="max-w-6xl mx-auto px-6">
 
         {/* Advantages */}
-        <section className="pb-20">
+        <section className="pt-20 pb-20">
           <div className="text-center mb-12 animate-fade-in" style={{ animationDelay: '0.2s', opacity: 0 }}>
             <h2 className="font-heading font-extrabold text-3xl md:text-4xl text-slate-900 mb-3">
               Почему АБ «Правовой статус»
             </h2>
-            <p className="text-slate-500 max-w-xl mx-auto">
+            <p className="text-slate-400 max-w-xl mx-auto">
               Мы специализируемся исключительно на защите интересов граждан в делах о несостоятельности
             </p>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {advantages.map((a, i) => (
               <div
                 key={i}
-                className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm hover:shadow-md hover:border-blue-200 transition-all animate-fade-in"
+                className="group bg-slate-50 rounded-2xl border border-slate-100 p-6 hover:bg-[#0F2A6B] hover:border-[#0F2A6B] transition-all duration-300 animate-fade-in"
                 style={{ animationDelay: `${0.25 + i * 0.08}s`, opacity: 0 }}
               >
-                <div className="w-11 h-11 rounded-xl bg-blue-50 flex items-center justify-center mb-4">
-                  <Icon name={a.icon} size={22} className="text-blue-700" fallback="Star" />
+                <div className="w-11 h-11 rounded-xl bg-white group-hover:bg-white/10 border border-slate-200 group-hover:border-white/10 flex items-center justify-center mb-4 transition-all">
+                  <Icon name={a.icon} size={20} className="text-[#0F2A6B] group-hover:text-blue-300 transition-colors" fallback="Star" />
                 </div>
-                <h3 className="font-heading font-bold text-slate-900 mb-2">{a.title}</h3>
-                <p className="text-sm text-slate-500 leading-relaxed">{a.desc}</p>
+                <h3 className="font-heading font-bold text-slate-900 group-hover:text-white mb-2 transition-colors">{a.title}</h3>
+                <p className="text-sm text-slate-500 group-hover:text-blue-200 leading-relaxed transition-colors">{a.desc}</p>
               </div>
             ))}
           </div>
@@ -214,24 +217,18 @@ const Home = () => {
 
           {/* Desktop stepper */}
           <div className="hidden md:block">
-            {/* Step icons row */}
             <div className="relative flex items-start">
-              {/* Connecting line behind icons */}
-              <div className="absolute top-[28px] left-[10%] right-[10%] h-0.5 bg-slate-200 z-0" />
-              <div className="absolute top-[28px] left-[10%] h-0.5 bg-gradient-to-r from-blue-700 to-blue-300 z-0" style={{ width: '80%' }} />
-
+              <div className="absolute top-[28px] left-[10%] right-[10%] h-px bg-slate-100 z-0" />
+              <div className="absolute top-[28px] left-[10%] h-px bg-gradient-to-r from-[#0F2A6B] to-blue-400 z-0" style={{ width: '80%' }} />
               {steps.map((s, i) => (
                 <div key={i} className="relative z-10 flex-1 flex flex-col items-center gap-4 animate-fade-in" style={{ animationDelay: `${0.35 + i * 0.08}s`, opacity: 0 }}>
-                  {/* Icon bubble */}
-                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-md border-4 border-white ${i === steps.length - 1 ? 'bg-teal-700' : 'bg-blue-800'}`}>
+                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center border-4 border-white shadow-sm ${i === steps.length - 1 ? 'bg-[#0F2A6B]' : 'bg-slate-800'}`}>
                     <Icon name={s.icon} size={22} className="text-white" fallback="Circle" />
                   </div>
-
-                  {/* Step info */}
                   <div className="text-center px-2">
-                    <div className="font-heading font-black text-xs text-slate-400 mb-1">{s.num}</div>
+                    <div className="font-heading font-black text-xs text-slate-300 mb-1">{s.num}</div>
                     <div className="font-heading font-bold text-slate-900 text-sm leading-tight mb-1">{s.title}</div>
-                    <div className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mb-2 ${i === steps.length - 1 ? 'bg-teal-50 text-teal-700' : 'bg-blue-50 text-blue-700'}`}>{s.tag}</div>
+                    <div className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mb-2 bg-slate-100 text-slate-500">{s.tag}</div>
                     <p className="text-xs text-slate-500 leading-relaxed">{s.text}</p>
                   </div>
                 </div>
@@ -244,15 +241,15 @@ const Home = () => {
             {steps.map((s, i) => (
               <div key={i} className="flex gap-4 animate-fade-in" style={{ animationDelay: `${0.35 + i * 0.08}s`, opacity: 0 }}>
                 <div className="flex flex-col items-center">
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-sm shrink-0 ${i === steps.length - 1 ? 'bg-teal-700' : 'bg-blue-800'}`}>
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-sm shrink-0 ${i === steps.length - 1 ? 'bg-[#0F2A6B]' : 'bg-slate-800'}`}>
                     <Icon name={s.icon} size={20} className="text-white" fallback="Circle" />
                   </div>
-                  {i < steps.length - 1 && <div className="w-0.5 flex-1 bg-slate-200 my-1" />}
+                  {i < steps.length - 1 && <div className="w-px flex-1 bg-slate-100 my-1" />}
                 </div>
                 <div className="pb-6 pt-1">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-heading font-bold text-slate-900">{s.title}</span>
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${i === steps.length - 1 ? 'bg-teal-50 text-teal-700' : 'bg-blue-50 text-blue-700'}`}>{s.tag}</span>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-500">{s.tag}</span>
                   </div>
                   <p className="text-sm text-slate-500 leading-relaxed">{s.text}</p>
                 </div>
@@ -271,103 +268,70 @@ const Home = () => {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Stages card */}
-            <button
-              onClick={() => navigate('/stages')}
-              className="group bg-white border border-slate-200 rounded-3xl p-8 shadow-sm hover:shadow-xl hover:border-blue-200 transition-all duration-300 text-left animate-fade-in"
-              style={{ animationDelay: '0.4s', opacity: 0 }}
-            >
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-700 to-blue-900 flex items-center justify-center mb-6 shadow-md group-hover:-translate-y-1 transition-transform duration-300">
-                <Icon name="ListOrdered" size={28} className="text-white" fallback="List" />
-              </div>
-              <h3 className="font-heading font-bold text-2xl text-slate-900 mb-2">Этапы процедуры</h3>
-              <p className="text-slate-500 text-sm leading-relaxed mb-6">
-                Пять ключевых шагов — от подачи заявления в суд до полного списания долгов.
-                Кликайте на этапы для подробностей.
-              </p>
-              <div className="flex flex-wrap gap-2 mb-8">
-                {['Подача заявления', 'Суд', 'Реструктуризация', 'Реализация', 'Списание'].map((t) => (
-                  <span key={t} className="text-xs px-3 py-1 rounded-full bg-blue-50 text-blue-700 font-medium">
-                    {t}
-                  </span>
-                ))}
-              </div>
-              <div className="flex items-center gap-2 text-blue-700 font-semibold text-sm group-hover:gap-3 transition-all">
-                Перейти к этапам
-                <Icon name="ArrowRight" size={16} />
-              </div>
-            </button>
-
-            {/* Consequences card */}
-            <button
-              onClick={() => navigate('/consequences')}
-              className="group bg-white border border-slate-200 rounded-3xl p-8 shadow-sm hover:shadow-xl hover:border-amber-200 transition-all duration-300 text-left animate-fade-in"
-              style={{ animationDelay: '0.48s', opacity: 0 }}
-            >
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center mb-6 shadow-md group-hover:-translate-y-1 transition-transform duration-300">
-                <Icon name="AlertTriangle" size={28} className="text-white" fallback="Alert" />
-              </div>
-              <h3 className="font-heading font-bold text-2xl text-slate-900 mb-2">Последствия банкротства</h3>
-              <p className="text-slate-500 text-sm leading-relaxed mb-6">
-                Ограничения по срокам, что сохраняется, какие долги не списываются.
-                Наглядные шкалы и сравнение плюсов и минусов.
-              </p>
-              <div className="flex flex-wrap gap-2 mb-8">
-                {['Ограничения', 'Кредиты', 'Руководство', 'Что сохранится', 'Сроки'].map((t) => (
-                  <span key={t} className="text-xs px-3 py-1 rounded-full bg-amber-50 text-amber-700 font-medium">
-                    {t}
-                  </span>
-                ))}
-              </div>
-              <div className="flex items-center gap-2 text-amber-600 font-semibold text-sm group-hover:gap-3 transition-all">
-                Перейти к последствиям
-                <Icon name="ArrowRight" size={16} />
-              </div>
-            </button>
-
-            {/* Payments card */}
-            <button
-              onClick={() => navigate('/payments')}
-              className="group bg-white border border-slate-200 rounded-3xl p-8 shadow-sm hover:shadow-xl hover:border-teal-200 transition-all duration-300 text-left animate-fade-in"
-              style={{ animationDelay: '0.56s', opacity: 0 }}
-            >
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-teal-700 to-teal-900 flex items-center justify-center mb-6 shadow-md group-hover:-translate-y-1 transition-transform duration-300">
-                <Icon name="Receipt" size={28} className="text-white" fallback="Wallet" />
-              </div>
-              <h3 className="font-heading font-bold text-2xl text-slate-900 mb-2">Обязательные платежи</h3>
-              <p className="text-slate-500 text-sm leading-relaxed mb-6">
-                Госпошлина, вознаграждение управляющего, публикации и доп. расходы.
-                Сводная таблица всех затрат на процедуру.
-              </p>
-              <div className="flex flex-wrap gap-2 mb-8">
-                {['Госпошлина', 'Управляющий', 'Публикации', 'МФЦ бесплатно'].map((t) => (
-                  <span key={t} className="text-xs px-3 py-1 rounded-full bg-teal-50 text-teal-700 font-medium">
-                    {t}
-                  </span>
-                ))}
-              </div>
-              <div className="flex items-center gap-2 text-teal-700 font-semibold text-sm group-hover:gap-3 transition-all">
-                Посмотреть платежи
-                <Icon name="ArrowRight" size={16} />
-              </div>
-            </button>
+            {[
+              {
+                path: '/stages', icon: 'ListOrdered', delay: '0.4s',
+                title: 'Этапы процедуры',
+                desc: 'Пять ключевых шагов — от подачи заявления в суд до полного списания долгов.',
+                tags: ['Подача заявления', 'Суд', 'Реструктуризация', 'Реализация', 'Списание'],
+                link: 'Перейти к этапам',
+              },
+              {
+                path: '/consequences', icon: 'AlertTriangle', delay: '0.48s',
+                title: 'Последствия банкротства',
+                desc: 'Ограничения по срокам, что сохраняется, какие долги не списываются.',
+                tags: ['Ограничения', 'Кредиты', 'Руководство', 'Что сохранится', 'Сроки'],
+                link: 'Перейти к последствиям',
+              },
+              {
+                path: '/payments', icon: 'Receipt', delay: '0.56s',
+                title: 'Обязательные платежи',
+                desc: 'Госпошлина, вознаграждение управляющего, публикации и доп. расходы.',
+                tags: ['Госпошлина', 'Управляющий', 'Публикации', 'МФЦ бесплатно'],
+                link: 'Посмотреть платежи',
+              },
+            ].map((card) => (
+              <button
+                key={card.path}
+                onClick={() => navigate(card.path)}
+                className="group bg-white border border-slate-100 rounded-2xl p-7 hover:border-slate-300 hover:shadow-lg transition-all duration-300 text-left animate-fade-in"
+                style={{ animationDelay: card.delay, opacity: 0 }}
+              >
+                <div className="w-12 h-12 rounded-xl bg-[#0A1628] flex items-center justify-center mb-5 group-hover:-translate-y-0.5 transition-transform duration-300">
+                  <Icon name={card.icon} size={22} className="text-blue-400" fallback="List" />
+                </div>
+                <h3 className="font-heading font-bold text-xl text-slate-900 mb-2">{card.title}</h3>
+                <p className="text-slate-500 text-sm leading-relaxed mb-5">{card.desc}</p>
+                <div className="flex flex-wrap gap-1.5 mb-6">
+                  {card.tags.map((t) => (
+                    <span key={t} className="text-xs px-2.5 py-1 rounded-full bg-slate-100 text-slate-500 font-medium">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+                <div className="flex items-center gap-2 text-[#0F2A6B] font-semibold text-sm group-hover:gap-3 transition-all">
+                  {card.link}
+                  <Icon name="ArrowRight" size={15} />
+                </div>
+              </button>
+            ))}
 
           </div>
         </section>
 
         {/* Stats */}
         <section className="pb-20 animate-fade-in" style={{ animationDelay: '0.5s', opacity: 0 }}>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="bg-[#0A1628] rounded-2xl grid grid-cols-2 md:grid-cols-4">
             {[
               { icon: 'Users', value: '500+', label: 'завершённых дел' },
               { icon: 'Timer', value: '6–12 мес', label: 'средний срок' },
               { icon: 'Wallet', value: 'от 25 000 ₽', label: 'порог долга' },
               { icon: 'ShieldCheck', value: '100%', label: 'списание долгов' },
-            ].map((s) => (
-              <div key={s.label} className="rounded-2xl bg-white border border-slate-200 p-5 text-center shadow-sm">
-                <Icon name={s.icon} size={24} className="text-blue-700 mx-auto mb-2" fallback="Star" />
-                <div className="font-heading font-bold text-xl text-slate-900">{s.value}</div>
-                <div className="text-xs text-slate-500 mt-0.5">{s.label}</div>
+            ].map((s, i) => (
+              <div key={s.label} className={`p-7 text-center ${i < 3 ? 'border-r border-white/5' : ''}`}>
+                <Icon name={s.icon} size={22} className="text-blue-400 mx-auto mb-3" fallback="Star" />
+                <div className="font-heading font-black text-2xl text-white">{s.value}</div>
+                <div className="text-xs text-slate-500 mt-1">{s.label}</div>
               </div>
             ))}
           </div>
@@ -379,7 +343,7 @@ const Home = () => {
             <div className="grid md:grid-cols-2">
 
               {/* Left info panel */}
-              <div className="bg-blue-900 p-10 md:p-12 flex flex-col justify-between">
+              <div className="bg-[#0A1628] p-10 md:p-12 flex flex-col justify-between">
                 <div>
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 mb-8">
                     <span className="w-2 h-2 rounded-full bg-blue-300" />
@@ -478,7 +442,7 @@ const Home = () => {
                     <button
                       type="submit"
                       disabled={loading}
-                      className="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-blue-800 text-white font-semibold text-sm hover:bg-blue-900 transition-colors shadow-md disabled:opacity-70"
+                      className="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-[#0F2A6B] text-white font-semibold text-sm hover:bg-[#0a1f52] transition-colors shadow-md disabled:opacity-70"
                     >
                       {loading ? (
                         <>
@@ -507,15 +471,15 @@ const Home = () => {
       </div>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-slate-200 bg-white">
-        <div className="max-w-6xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-3">
+      <footer className="border-t border-slate-100 bg-white">
+        <div className="max-w-6xl mx-auto px-6 py-5 flex flex-col md:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <img
               src="https://cdn.poehali.dev/projects/3e7e35fe-ef29-4a30-b52d-2ba872294646/bucket/9887576b-326b-4273-a0f5-2a485157ab4a.png"
               alt="АБ Правовой статус"
-              className="h-8 w-auto object-contain"
+              className="h-7 w-auto object-contain opacity-70"
             />
-            <span className="text-sm text-slate-600 font-medium">Адвокатское бюро «Правовой статус»</span>
+            <span className="text-sm text-slate-500 font-medium">Адвокатское бюро «Правовой статус»</span>
           </div>
           <span className="text-xs text-slate-400">Юридическая помощь в делах о банкротстве физических лиц</span>
         </div>
