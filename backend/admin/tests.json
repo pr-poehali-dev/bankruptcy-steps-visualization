@@ -1,0 +1,30 @@
+{
+  "tests": [
+    {
+      "name": "Login valid",
+      "method": "POST",
+      "path": "/",
+      "body": {"_action": "login", "username": "admin", "password": "admin123"},
+      "expectedStatus": 200,
+      "expectedBody": {"ok": true},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Login invalid",
+      "method": "POST",
+      "path": "/",
+      "body": {"_action": "login", "username": "admin", "password": "wrong"},
+      "expectedStatus": 401,
+      "bodyMatcher": "partial",
+      "expectedBody": {"ok": false}
+    },
+    {
+      "name": "OPTIONS preflight",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200,
+      "bodyMatcher": "partial",
+      "expectedBody": {}
+    }
+  ]
+}

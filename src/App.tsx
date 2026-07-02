@@ -8,6 +8,8 @@ import Home from "./pages/Home";
 import Index from "./pages/Index";
 import Consequences from "./pages/Consequences";
 import Payments from "./pages/Payments";
+import AdminLogin from "./pages/AdminLogin";
+import AdminPanel from "./pages/AdminPanel";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +25,8 @@ const App = () => (
           <Route path="/stages" element={<Index />} />
           <Route path="/consequences" element={<Consequences />} />
           <Route path="/payments" element={<Payments />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin" element={<AdminPanel />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
